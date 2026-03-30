@@ -1,15 +1,19 @@
 import { db } from '@/db';
 import { boards, lists, cards } from '@/db/schema';
-import { eq, asc } from 'drizzle-orm';
+import { eq, asc, and } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import BoardClient from '@/components/BoardClient';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { auth } from '@clerk/nextjs/server';
 
 export default async function BoardPage({ params }: { params: { id: string } }) {
-  const { id } = await params; // Next 15 awaits params.
+  const { id } = await params;
+  const { userId } = await auth();
+  if (!userId) notFound();
 
-  const boardResult = await db.select().from(boards).where(eq(boards.id, id));
+  // Only the board owner can view this page
+  const boardResult = await db.select().from(boards).where(and(eq(boards.id, id), eq(boards.userId, userId)));
   if (boardResult.length === 0) {
     notFound();
   }

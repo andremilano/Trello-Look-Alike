@@ -1,10 +1,15 @@
 import { db } from '@/db';
 import { boards, lists, cards } from '@/db/schema';
-import { eq, desc, asc, isNotNull } from 'drizzle-orm';
+import { eq, desc, asc, isNotNull, and } from 'drizzle-orm';
 import Link from 'next/link';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 export default async function Dashboard() {
-  const allBoards = await db.select().from(boards);
+  const { userId } = await auth();
+  if (!userId) redirect('/sign-in');
+
+  const allBoards = await db.select().from(boards).where(eq(boards.userId, userId));
   const allCards = await db.select().from(cards);
   
   const completedCardsCount = allCards.filter(c => c.isCompleted).length;

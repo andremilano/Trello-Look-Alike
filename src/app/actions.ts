@@ -2,22 +2,32 @@
 
 import { db } from '@/db';
 import { boards, lists, cards } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import crypto from 'crypto';
+import { auth } from '@clerk/nextjs/server';
+
+async function requireUserId(): Promise<string> {
+  const { userId } = await auth();
+  if (!userId) throw new Error('Unauthorized');
+  return userId;
+}
 
 export async function createBoard(formData: FormData) {
+  const userId = await requireUserId();
   const title = formData.get('title') as string;
   if (!title || title.trim() === '') return;
 
   const id = crypto.randomUUID();
   await db.insert(boards).values({
     id,
+    userId,
     title: title.trim(),
     createdAt: new Date(),
   });
 
   revalidatePath('/');
+  revalidatePath('/boards');
 }
 
 export async function createList(formData: FormData) {
@@ -71,21 +81,24 @@ export async function updateCardList(cardId: string, newListId: string, boardId:
 }
 
 export async function deleteBoard(boardId: string) {
-  // SQLite might not have ON DELETE CASCADE set up by default in Drizzle unless configured.
-  // We'll delete lists and cards manually or assume DB handles cascade. Let's manually delete to be safe.
+  const userId = await requireUserId();
+  // Only allow owner to delete
   const boardLists = await db.select().from(lists).where(eq(lists.boardId, boardId));
   for (const list of boardLists) {
     await db.delete(cards).where(eq(cards.listId, list.id));
   }
   await db.delete(lists).where(eq(lists.boardId, boardId));
-  await db.delete(boards).where(eq(boards.id, boardId));
+  await db.delete(boards).where(and(eq(boards.id, boardId), eq(boards.userId, userId)));
   revalidatePath('/');
+  revalidatePath('/boards');
 }
 
 export async function updateBoard(boardId: string, title: string) {
+  const userId = await requireUserId();
   if (!title || title.trim() === '') return;
-  await db.update(boards).set({ title: title.trim() }).where(eq(boards.id, boardId));
+  await db.update(boards).set({ title: title.trim() }).where(and(eq(boards.id, boardId), eq(boards.userId, userId)));
   revalidatePath('/');
+  revalidatePath('/boards');
 }
 
 export async function deleteList(listId: string, boardId: string) {

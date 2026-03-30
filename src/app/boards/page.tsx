@@ -2,11 +2,16 @@ import { db } from '@/db';
 import { boards } from '@/db/schema';
 import { createBoard } from '../actions';
 import { Plus } from 'lucide-react';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import BoardCard from '@/components/BoardCard';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
 
 export default async function BoardsPage() {
-  const allBoards = await db.select().from(boards).orderBy(desc(boards.createdAt));
+  const { userId } = await auth();
+  if (!userId) redirect('/sign-in');
+
+  const allBoards = await db.select().from(boards).where(eq(boards.userId, userId)).orderBy(desc(boards.createdAt));
 
   return (
     <div className="container mx-auto p-4 md:p-8">
