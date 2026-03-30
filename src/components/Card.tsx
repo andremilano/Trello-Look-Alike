@@ -173,13 +173,13 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
             />
           </form>
         ) : (
-          <p className={`flex-1 text-sm font-medium text-on-surface whitespace-pre-wrap pr-16 leading-relaxed ${card.isCompleted ? 'line-through text-on-surface-variant' : ''}`}>
+          <p className={`flex-1 min-w-0 break-words break-all text-sm font-medium text-on-surface whitespace-pre-wrap pr-4 leading-relaxed ${card.isCompleted ? 'line-through text-on-surface-variant' : ''}`}>
             {card.title}
           </p>
         )}
         
         {!isAnyFieldEditing && (
-          <div className="absolute top-0 right-0 flex opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-high shadow-ghost rounded flex-wrap justify-end gap-0.5 max-w-[80px]">
+          <div className="absolute -top-1 -right-1 z-20 flex items-center opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-low/90 backdrop-blur-sm shadow-ambient border border-outline-variant/30 rounded-lg p-0.5">
             {(!card.category) && (
               <button onClick={() => setIsEditingCategory(true)} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Add Category">
                 <Tag size={12} />
