@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Overview | The Earthbound Editorial</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-surface": "#1c1c19",
+              "secondary": "#456556",
+              "tertiary": "#704614",
+              "surface-dim": "#dcdad5",
+              "background": "#fcf9f4",
+              "primary-fixed": "#ffdad2",
+              "surface-bright": "#fcf9f4",
+              "on-secondary-container": "#4b6b5c",
+              "primary": "#853724",
+              "on-tertiary-fixed": "#2c1600",
+              "tertiary-fixed": "#ffdcbd",
+              "on-primary-fixed": "#3c0700",
+              "on-tertiary-fixed-variant": "#663d0b",
+              "primary-fixed-dim": "#ffb4a2",
+              "secondary-fixed": "#c7ebd7",
+              "surface-tint": "#984631",
+              "on-secondary-fixed": "#012115",
+              "surface-container": "#f0ede8",
+              "surface-container-highest": "#e5e2dd",
+              "primary-container": "#a44e39",
+              "on-error": "#ffffff",
+              "on-primary": "#ffffff",
+              "on-surface-variant": "#54433c",
+              "surface-variant": "#e5e2dd",
+              "tertiary-fixed-dim": "#f7bb7e",
+              "error-container": "#ffdad6",
+              "inverse-primary": "#ffb4a2",
+              "surface": "#fcf9f4",
+              "surface-container-low": "#f6f3ee",
+              "surface-container-high": "#ebe8e3",
+              "error": "#ba1a1a",
+              "on-tertiary": "#ffffff",
+              "outline": "#87736b",
+              "on-secondary": "#ffffff",
+              "on-primary-fixed-variant": "#7a2f1c",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#accebc",
+              "secondary-container": "#c7ebd7",
+              "inverse-on-surface": "#f3f0eb",
+              "on-primary-container": "#ffe1da",
+              "on-tertiary-container": "#ffe1c8",
+              "outline-variant": "#dac1b8",
+              "tertiary-container": "#8c5d2a",
+              "on-background": "#1c1c19",
+              "on-secondary-fixed-variant": "#2e4d3f",
+              "inverse-surface": "#31302d",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #fcf9f4;
+            color: #1c1c19;
+            font-family: 'Inter', sans-serif;
+        }
+        .editorial-shadow {
+            box-shadow: 0 10px 32px -4px rgba(28, 28, 25, 0.06);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="bg-[#fcf9f4] dark:bg-[#1c1c19] docked full-width top-0 sticky z-50 flex justify-between items-center w-full px-8 py-4">
+<div class="flex items-center gap-8">
+<span class="text-xl font-extrabold text-[#1c1c19] dark:text-[#fcf9f4] font-['Manrope'] tracking-tight">The Earthbound Editorial</span>
+<nav class="hidden md:flex items-center gap-6 font-['Manrope'] font-bold tracking-tight">
+<a class="text-[#853724] border-b-2 border-[#853724] pb-1" href="#">My Boards</a>
+<a class="text-[#1c1c19] opacity-70 dark:text-[#fcf9f4] hover:bg-[#f6f3ee] transition-colors" href="#">Team Space</a>
+<a class="text-[#1c1c19] opacity-70 dark:text-[#fcf9f4] hover:bg-[#f6f3ee] transition-colors" href="#">Timeline</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-surface-container-low rounded-full px-4 py-1.5 group focus-within:ring-1 ring-primary/20">
+<span class="material-symbols-outlined text-sm opacity-50">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-on-surface/40" placeholder="Search publications..." type="text"/>
+</div>
+<button class="p-2 hover:bg-[#f6f3ee] rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-[#f6f3ee] rounded-full transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional man with a friendly expression, soft natural studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBosa99HJMKWpdMOJLwYAFX9sDNwGh1z8Diidg9xa79bDaoIsEDnGMaeElSiRRcnLcAETKqScWAsvzO6Fnknjx2cfQKSnGV1ZdjOY6q8UUTTpPGs18iIkg08W5elr9yH4p-_ZzPkVkBT68Gn8X091RoGLvgu8kjPLuldfbzGJ-dJpM1D4Cc9Ra4xth1TsWPEkJDP3V6u9-fFieLPUzfOSnv7XKodHqxwLEH4SXcY8YZ6A-kkh5s6IrX1Vvn7hVXmESL38qp-0M1jhFl"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- Side Navigation Bar -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-20 bg-[#e5e2dd] dark:bg-[#252521] flex flex-col hidden lg:flex">
+<div class="px-4 py-6">
+<div class="flex items-center gap-3 px-4 mb-10">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+</div>
+<div>
+<p class="text-lg font-bold text-[#1c1c19] dark:text-[#fcf9f4] font-['Manrope']">Editorial Studio</p>
+<p class="text-xs opacity-60 font-medium font-['Inter']">Main Workspace</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 bg-[#fcf9f4] dark:bg-[#1c1c19] text-[#853724] dark:text-[#a44e39] rounded-l-full ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>My Boards</span>
+</a>
+<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Team Space</span>
+</a>
+<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
+<span class="material-symbols-outlined" data-icon="view_timeline">view_timeline</span>
+<span>Timeline</span>
+</a>
+<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Archive</span>
+</a>
+<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Resources</span>
+</a>
+</nav>
+<div class="mt-10 px-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold font-['Manrope'] flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                        New Board
+                    </button>
+</div>
+</div>
+<div class="mt-auto pb-8 border-t border-outline-variant/10 pt-4">
+<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 p-8 md:p-12 space-y-12">
+<!-- Dashboard Header Section -->
+<section class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-6">
+<div>
+<h1 class="text-4xl md:text-5xl font-['Manrope'] font-extrabold tracking-tight text-on-surface mb-2">Workspace Overview</h1>
+<p class="text-on-surface-variant font-medium">Welcome back, Arthur. You have 4 deadlines approaching this week.</p>
+</div>
+<div class="flex gap-3">
+<div class="flex -space-x-2">
+<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background object-cover" data-alt="Portrait of a smiling woman with dark hair, natural sunlight outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0ebBmVJywVv7YLLxFqdYarN7bQIy7e8mBEWKQENIMurKp4bk6jdORInmx3eEN0dszGTzPQWCJq1Hlhax-uk5qx7mr4mcvsPt9L7K9Pjh1HxkVdPbDXHynERTxXTAxKnBHzbv99EZNz3_Hi75kNz5pisYsqq6WSBW-6nAUyFNVYR-VrCNzU90UOYXA9ZAf2rLclzA1KC2ojUZ_iqfYvyp_ZFwyo8tcRnSS-zbDCULPdF0zzEvAr7X-mBIgXMT_B4Jgz4R6sUBx-yW8"/>
+<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background object-cover" data-alt="Portrait of a young man with glasses and a beard, soft indoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8UgnKLuLlvBkJ76KCD5oLLbC0pIQeckqf0Wi5drYhyJ429ReSC-h3VGL0DrtparxoU-TNiylizgpEVf2lUJMFU7oqDTFZVfu9vw1KenjECFO2pP_28i787r8fGgIr2vO03CtUn2I-KnbLdLB0FGfOJJMcgK6ThyqhsjfzWBda2g_Q6wYSj-1iix_4yKUZ5mAUSunLq_QEN2_hZKd2ZCVL1phhdjsPmtNJKFNHXEQ4hO0Dc2xVdXQ2DlPTIW9vE2MX5d2V2t3mUrfT"/>
+<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background object-cover" data-alt="Portrait of a man with a friendly smile, neutral background, professional headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKZEsoF84iOBVYUjOSiQtHoBn0gmK8ljHnnFK1qIKzfhhh47-1EdjrUrbPSUb9tSzFknlSSG_c3iI4aIHa__09kHOpdqbf75o-_hvkCfpVxLQgmMz8GSH39TmWxmxOlZKYY7LxUgtrAv4sfd5pZS-KRo93-jTwWVuvwSlztjT576A-8sKWRyrTkuhmTiVeUQSf2rPYv17MF5G_mYk-k8MD1AjAolHjJ7yzBKY3B63WSpHoHRp5xWNbO7UZy10bIm8D61dtH3WkMTv_"/>
+<div class="w-10 h-10 rounded-full border-2 border-background bg-surface-container-highest flex items-center justify-center text-xs font-bold text-on-surface-variant">+8</div>
+</div>
+</div>
+</section>
+<!-- High Level Stats Bento Grid -->
+<section class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="md:col-span-2 bg-surface-container-low p-8 rounded-xl flex flex-col justify-between editorial-shadow relative overflow-hidden">
+<div class="relative z-10">
+<span class="text-label-sm font-bold uppercase tracking-widest text-primary opacity-80 mb-4 block">Active Projects</span>
+<p class="text-5xl font-extrabold font-['Manrope'] tracking-tight">12</p>
+<p class="mt-4 text-sm text-on-surface-variant max-w-xs">Total production boards currently in circulation across 3 editorial teams.</p>
+</div>
+<div class="absolute right-[-20px] bottom-[-20px] opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[160px]" data-icon="grid_view">grid_view</span>
+</div>
+</div>
+<div class="bg-secondary-container p-8 rounded-xl flex flex-col justify-between editorial-shadow">
+<div>
+<span class="text-label-sm font-bold uppercase tracking-widest text-on-secondary-container opacity-80 mb-4 block">Completion Rate</span>
+<p class="text-5xl font-extrabold font-['Manrope'] tracking-tight">84%</p>
+</div>
+<div class="mt-4 flex items-center gap-2 text-secondary font-semibold text-sm">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                        +12% this month
+                    </div>
+</div>
+<div class="bg-surface-container-highest p-8 rounded-xl flex flex-col justify-between editorial-shadow">
+<div>
+<span class="text-label-sm font-bold uppercase tracking-widest text-on-surface-variant opacity-80 mb-4 block">Total Tasks</span>
+<p class="text-5xl font-extrabold font-['Manrope'] tracking-tight">142</p>
+</div>
+<p class="mt-4 text-sm text-on-surface-variant">24 tasks assigned to you</p>
+</div>
+</section>
+<!-- Main Content Area: Boards & Activity -->
+<section class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
+<!-- Active Boards Gallery -->
+<div class="lg:col-span-2 space-y-8">
+<div class="flex justify-between items-center">
+<h2 class="text-2xl font-['Manrope'] font-bold text-on-surface">Active Boards</h2>
+<button class="text-sm font-bold text-primary hover:underline flex items-center gap-1">
+                            View All <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Project Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl editorial-shadow group hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+</div>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter">In Progress</span>
+</div>
+<h3 class="text-lg font-bold font-['Manrope'] mb-2">Summer Issue 2024</h3>
+<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Curation of seasonal trends, architectural photography, and artisan profiles.</p>
+<div class="space-y-4">
+<div class="flex justify-between items-end text-xs font-bold">
+<span class="text-on-surface-variant">Progress</span>
+<span>65%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 65%"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<div class="flex -space-x-1.5">
+<img alt="Member" class="w-6 h-6 rounded-full border border-background object-cover" data-alt="Close up portrait of woman with gentle expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzmRSdI5GxpwLklufXRbn0t50O1l8-4458BbFPxGGVzB1W218muyK01QXCpy3_Fr1ypFXRJKMNBKxSmwlTn0LvTYJuLFMyeCkMi_nNqn83uUbSor5-1VB4Bm4xwUAu065qewpvpOO2gFhtyj5oZUevToBKN_RqwTBqFsnanQDUN35H4pxTbMgZRyS3AGTJbodBQadDQrNwy07NXA6kD7CmBulYXPHnkNgo2PtQb9I2xuTwckyJwv7s9d8soRkJMOOrQbWdmWLe9Eku"/>
+<img alt="Member" class="w-6 h-6 rounded-full border border-background object-cover" data-alt="Portrait of a young man looking directly into the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_E29RB0MJL6c9h1lt-PF8bqv2xVba6doExdjynSUS3hjGAgnLiqceZnl2wQbP3_IquWFTotObgKg8922ZV__qiT7cVx6ikTdDzgrPwFgas_CEc7b4slrmPytvNlRY4E3Rdl8d9p-4DfzJqeOmJSwZjfhTLlP7z6stpvvb9PFOQNZuOjh0t_jv-MZW9R0KLvZNndYN6Ra21lB1TIq6piGUHXvdsmMtz4efUMCnHHsh5aniktJrvQT3QdaZJoZx_JeiU_7R_RA270sV"/>
+</div>
+<span class="text-[10px] font-medium text-on-surface-variant">Updated 2h ago</span>
+</div>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl editorial-shadow group hover:translate-y-[-4px] transition-transform duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="w-12 h-12 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+</div>
+<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter">Reviewing</span>
+</div>
+<h3 class="text-lg font-bold font-['Manrope'] mb-2">Heritage Monograph</h3>
+<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Detailed documentation of Brutalist architecture in Eastern Europe.</p>
+<div class="space-y-4">
+<div class="flex justify-between items-end text-xs font-bold">
+<span class="text-on-surface-variant">Progress</span>
+<span>32%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 32%"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<div class="flex -space-x-1.5">
+<img alt="Member" class="w-6 h-6 rounded-full border border-background object-cover" data-alt="Portrait of a young woman with a thoughtful gaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2ouOWCuE4i2BjvR4Eb_41G1WvEnAAZVHI1lRHA-JAhXtNW34ddAlK4Olhj3Ue8nJpBhrFn4aLG_jMTgpZycunIZyKV4SVIeJI5HpjmwnPVdafE8gdIR4ul3-ogWRapy86VkhplDEGRhbeO3tr3CKlkvGHSYONZC_cxSdxtXeualynZz3Sg9EIufKfq3kYnKMAnQY2e9nBwwLPN--ohFiGU80PPsqLKW1uHOES1lwnMaWGi8mfn-FFqOiyxuvvDLsrTMBRGtsWnr_a"/>
+<div class="w-6 h-6 rounded-full border border-background bg-surface-container-high flex items-center justify-center text-[8px] font-bold">+2</div>
+</div>
+<span class="text-[10px] font-medium text-on-surface-variant">Updated 1d ago</span>
+</div>
+</div>
+</div>
+<!-- Project Card 3 (Visual Layout) -->
+<div class="bg-surface-container-low md:col-span-2 p-6 rounded-xl editorial-shadow flex flex-col md:flex-row gap-8 items-center border border-outline-variant/10">
+<div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0">
+<img alt="Draft" class="w-full h-full object-cover" data-alt="Candid shot of fountain pen writing on cream colored paper with soft focus study background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnjoE7vriOd2uUKmPd7PRowZkPFlGO4dunhTbXlV-j8jvO2SJHu53pcNB1ZF-qYoeNAyNwuCOexlLED92WgzwZUVpTWxfAPFhBnUggrbeLWkdRrhkHPszZPgzWsCg_LS6TJeYvOZRtmL1n4R1QT05kJqTEjALcbgWUsLOnQgnWCySkrwEGggqFxKLZu6qNCBjonk1FvH8ijYtxo_dm78OQsvc5GhdYrqgloKH_zXtUg1sbS7GteIXkNE6eYurflxp-GMA4XdF504pC"/>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-2">
+<h3 class="text-lg font-bold font-['Manrope']">The Hand-Pressed Archive</h3>
+<span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded text-[10px] font-bold">Planning</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-4">A collaborative space for documenting vintage letterpress techniques and ink recipes.</p>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm opacity-40" data-icon="forum">forum</span>
+<span class="text-xs font-bold">14 Comments</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm opacity-40" data-icon="attach_file">attach_file</span>
+<span class="text-xs font-bold">8 Files</span>
+</div>
+</div>
+</div>
+<button class="p-3 bg-surface-container-lowest rounded-full border border-outline-variant/20 hover:bg-white transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_forward_ios">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Deadlines & Activity -->
+<div class="space-y-10">
+<!-- Upcoming Deadlines -->
+<div class="bg-surface-container-low p-8 rounded-xl editorial-shadow">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-xl font-['Manrope'] font-bold">Deadlines</h2>
+<span class="material-symbols-outlined text-primary" data-icon="calendar_today">calendar_today</span>
+</div>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="flex flex-col items-center justify-center w-12 h-14 bg-surface-container-highest rounded-lg border border-outline-variant/10">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant">Jun</span>
+<span class="text-lg font-extrabold font-['Manrope']">18</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-tight">Moodboard Approval</p>
+<p class="text-[11px] font-medium text-primary mt-1">Due in 2 days</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center justify-center w-12 h-14 bg-surface-container-highest rounded-lg border border-outline-variant/10">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant">Jun</span>
+<span class="text-lg font-extrabold font-['Manrope']">21</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-tight">Typography Proofs</p>
+<p class="text-[11px] font-medium text-on-surface-variant mt-1">Due in 5 days</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center justify-center w-12 h-14 bg-surface-container-highest rounded-lg border border-outline-variant/10">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant">Jun</span>
+<span class="text-lg font-extrabold font-['Manrope']">25</span>
+</div>
+<div>
+<p class="text-sm font-bold leading-tight">Color Theory Draft</p>
+<p class="text-[11px] font-medium text-on-surface-variant mt-1">Due in 9 days</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-3 bg-surface-container-highest text-on-surface text-sm font-bold rounded-lg hover:bg-surface-container-high transition-colors">
+                            Full Calendar
+                        </button>
+</div>
+<!-- Recent Activity -->
+<div>
+<h2 class="text-xl font-['Manrope'] font-bold mb-6">Recent Activity</h2>
+<div class="space-y-6 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/30">
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[12px] text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="text-xs text-on-surface"><strong>Sarah L.</strong> completed task <em>"Refine paper stock options"</em></p>
+<p class="text-[10px] text-on-surface-variant font-medium mt-1">14 minutes ago</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+</div>
+<div>
+<p class="text-xs text-on-surface"><strong>Arthur W.</strong> added 4 new images to <em>Summer Issue</em> moodboard</p>
+<p class="text-[10px] text-on-surface-variant font-medium mt-1">2 hours ago</p>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center z-10">
+<span class="material-symbols-outlined text-[12px] text-on-surface" style="font-variation-settings: 'FILL' 1;">chat</span>
+</div>
+<div>
+<p class="text-xs text-on-surface"><strong>Michael K.</strong> commented on <em>Heritage Monograph</em></p>
+<p class="text-[10px] text-on-surface-variant font-medium mt-1">5 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Mobile Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#fcf9f4] border-t border-outline-variant/10 px-6 py-4 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-bold">Boards</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface opacity-60">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[10px] font-bold">Team</span>
+</button>
+<div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-on-primary shadow-lg -translate-y-6">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</div>
+<button class="flex flex-col items-center gap-1 text-on-surface opacity-60">
+<span class="material-symbols-outlined" data-icon="view_timeline">view_timeline</span>
+<span class="text-[10px] font-bold">Timeline</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface opacity-60">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-bold">Profile</span>
+</button>
+</nav>
+</body></html>
