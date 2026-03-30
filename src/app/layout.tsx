@@ -27,7 +27,7 @@ export default function RootLayout({
         {/* Top Navigation Bar */}
         <header className="bg-surface docked full-width top-0 sticky z-40 flex justify-between items-center w-full px-8 py-4 border-b border-outline-variant/20">
           <div className="flex items-center gap-8">
-            <Link href="/" className="text-xl font-extrabold text-on-surface font-serif tracking-tight">The Earthbound Editorial</Link>
+            <Link href="/" className="text-xl font-extrabold text-on-surface font-serif tracking-tight">ManageIt</Link>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative hidden md:flex items-center bg-surface-container-low rounded-full px-4 py-1.5 group focus-within:ring-1 ring-primary/20">

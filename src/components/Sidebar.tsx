@@ -32,7 +32,7 @@ export default function Sidebar() {
             <span className="material-symbols-outlined">auto_stories</span>
           </div>
           <div>
-            <p className="text-lg font-bold text-on-surface font-serif">Editorial Studio</p>
+          <p className="text-lg font-bold text-on-surface font-serif">Milo Studio</p>
             <p className="text-xs opacity-60 font-medium font-sans">Main Workspace</p>
           </div>
         </div>
