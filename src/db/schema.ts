@@ -20,6 +20,10 @@ export const cards = sqliteTable('cards', {
   title: text('title').notNull(),
   description: text('description'),
   isCompleted: integer('is_completed', { mode: 'boolean' }).default(false).notNull(),
+  dueDate: text('due_date'),
+  category: text('category'),
+  categoryColor: text('category_color'),
+  assigned: text('assigned'),
   order: integer('order').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 });

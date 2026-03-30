@@ -102,12 +102,12 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
           >
             <input type="hidden" name="listId" value={list.id} />
             <input type="hidden" name="boardId" value={boardId} />
-            <textarea
+              <textarea
               name="title"
               placeholder="Enter card title..."
               required
               autoFocus
-              className="w-full text-sm p-2 rounded-xl bg-surface-container-lowest text-on-surface shadow-ambient focus:outline-none focus:ring-1 focus:ring-secondary resize-none min-h-[60px]"
+              className="w-full text-sm p-2 rounded-xl bg-surface-container-high text-on-surface shadow-ambient focus:outline-none focus:ring-1 focus:ring-secondary resize-none min-h-[60px]"
             />
             <div className="flex items-center gap-2">
               <button

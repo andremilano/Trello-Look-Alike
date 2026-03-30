@@ -115,3 +115,18 @@ export async function updateCardDescription(cardId: string, description: string 
   await db.update(cards).set({ description }).where(eq(cards.id, cardId));
   revalidatePath(`/board/${boardId}`);
 }
+
+export async function updateCardDueDate(cardId: string, dueDate: string | null, boardId: string) {
+  await db.update(cards).set({ dueDate }).where(eq(cards.id, cardId));
+  revalidatePath(`/board/${boardId}`);
+}
+
+export async function updateCardCategory(cardId: string, category: string | null, categoryColor: string | null, boardId: string) {
+  await db.update(cards).set({ category, categoryColor }).where(eq(cards.id, cardId));
+  revalidatePath(`/board/${boardId}`);
+}
+
+export async function updateCardAssigned(cardId: string, assigned: string | null, boardId: string) {
+  await db.update(cards).set({ assigned }).where(eq(cards.id, cardId));
+  revalidatePath(`/board/${boardId}`);
+}

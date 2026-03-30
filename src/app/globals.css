@@ -1,34 +1,35 @@
 @import "tailwindcss";
 
 @theme {
-  --color-surface: #f8f9ff;
-  --color-surface-dim: #dde1e9;
+  --color-surface: #f9f7f3;
+  --color-surface-dim: #d4d0c8;
   --color-surface-bright: #ffffff;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #eef4ff;
-  --color-surface-container: #e6edf8;
-  --color-surface-container-high: #dde5ef;
-  --color-surface-container-highest: #d4dce5;
+  --color-surface-container-low: #f1efe9; /* Lists */
+  --color-surface-container: #e7e4dd;
+  --color-surface-container-high: #dcd9d0; /* Cards */
+  --color-surface-container-highest: #c8c5bb; /* Card Hover */
 
-  --color-primary: #000000;
+  --color-primary: #853724;
   --color-on-primary: #ffffff;
-  --color-primary-container: #101b30;
+  --color-primary-container: #a44e39;
   
-  --color-secondary: #4a607a;
+  --color-secondary: #456556;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #cbe3ff;
+  --color-secondary-container: #688a7a;
 
-  --color-tertiary: #e9c176;
-  --color-tertiary-fixed: #ffdea5;
+  --color-tertiary: #A67C52;
+  --color-tertiary-fixed: #ffdcbd;
+  --color-secondary-fixed: #c7ebd7;
 
-  --color-outline: #74777d;
-  --color-outline-variant: #c4c6cc;
+  --color-outline: #8c837f;
+  --color-outline-variant: #dac1b8;
 
-  --color-on-surface: #1a1b1e;
-  --color-on-surface-variant: #44474c;
+  --color-on-surface: #1c1c19;
+  --color-on-surface-variant: #524f4b;
 
-  --shadow-ambient: 0 20px 40px rgba(0, 29, 54, 0.06);
-  --shadow-ghost: 0 0 0 1px rgba(196, 198, 204, 0.15); /* 15% opacity outline variant */
+  --shadow-ambient: 0 32px 64px rgba(28, 28, 25, 0.06);
+  --shadow-ghost: 0 0 0 1px rgba(218, 193, 184, 0.15); /* 15% opacity outline variant */
 
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);

@@ -48,7 +48,7 @@ export default function BoardCard({ board }: { board: any }) {
           router.push(`/board/${board.id}`);
         }
       }}
-      className={`group relative h-32 rounded-xl bg-surface-container-lowest p-5 flex flex-col justify-between shadow-ambient transition-all duration-300 ease-out ${!isEditing ? 'cursor-pointer hover:-translate-y-1 hover:bg-surface-bright' : ''} ${isDeleting ? 'opacity-50' : ''}`}
+      className={`group relative h-32 rounded-xl bg-surface-container-high p-5 flex flex-col justify-between shadow-ghost hover:shadow-ambient transition-all duration-300 ease-out ${!isEditing ? 'cursor-pointer hover:-translate-y-1 hover:bg-surface-container-highest' : ''} ${isDeleting ? 'opacity-50' : ''}`}
     >
       {isEditing ? (
         <form onSubmit={handleSave} className="w-full flex flex-col gap-2 relative z-10" onClick={(e) => e.stopPropagation()}>
@@ -56,7 +56,7 @@ export default function BoardCard({ board }: { board: any }) {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-surface-container-lowest text-sm font-semibold text-on-surface border-b border-outline-variant px-1 py-1 focus:outline-none focus:border-secondary transition-colors"
+            className="w-full bg-surface text-sm font-semibold text-on-surface border-b border-outline-variant px-1 py-1 focus:outline-none focus:border-secondary transition-colors"
             autoFocus
           />
           <div className="flex items-center gap-1 mt-1">
