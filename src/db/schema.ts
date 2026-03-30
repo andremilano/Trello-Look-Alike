@@ -19,6 +19,7 @@ export const cards = sqliteTable('cards', {
   listId: text('list_id').notNull().references(() => lists.id, { onDelete: 'cascade' }),
   title: text('title').notNull(),
   description: text('description'),
+  isCompleted: integer('is_completed', { mode: 'boolean' }).default(false).notNull(),
   order: integer('order').notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
 });

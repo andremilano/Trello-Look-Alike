@@ -105,3 +105,13 @@ export async function updateCardTitle(cardId: string, title: string, boardId: st
   await db.update(cards).set({ title: title.trim() }).where(eq(cards.id, cardId));
   revalidatePath(`/board/${boardId}`);
 }
+
+export async function toggleCardCompletion(cardId: string, isCompleted: boolean, boardId: string) {
+  await db.update(cards).set({ isCompleted }).where(eq(cards.id, cardId));
+  revalidatePath(`/board/${boardId}`);
+}
+
+export async function updateCardDescription(cardId: string, description: string | null, boardId: string) {
+  await db.update(cards).set({ description }).where(eq(cards.id, cardId));
+  revalidatePath(`/board/${boardId}`);
+}

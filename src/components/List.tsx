@@ -46,7 +46,7 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
 
   return (
     <div 
-      className={`group shrink-0 w-72 bg-gray-100/50 backdrop-blur-sm rounded-xl p-3 border border-gray-200/60 shadow-sm flex flex-col max-h-full ${isDeleting ? 'opacity-50' : ''}`}
+      className={`group shrink-0 w-72 bg-surface-container-low shadow-ghost rounded-xl p-3 flex flex-col max-h-full transition-opacity ${isDeleting ? 'opacity-50' : ''}`}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -59,12 +59,12 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
               onChange={(e) => setTitle(e.target.value)}
               autoFocus
               onBlur={() => handleSaveTitle()}
-              className="w-full text-sm font-semibold text-gray-800 bg-white border border-blue-500 rounded px-1.5 py-0.5 focus:outline-none"
+              className="w-full text-sm font-semibold text-on-surface bg-transparent border-b border-outline-variant px-1.5 py-0.5 focus:outline-none focus:border-secondary transition-colors"
             />
           </form>
         ) : (
           <h3 
-            className="font-semibold text-gray-800 text-sm tracking-wide cursor-pointer flex-1"
+            className="font-semibold text-on-surface text-sm tracking-wide cursor-pointer flex-1"
             onClick={() => setIsEditing(true)}
           >
             {list.title}
@@ -75,23 +75,23 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
           {!isEditing && (
             <button
               onClick={handleDelete}
-              className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-50 rounded"
+              className="text-on-surface-variant hover:text-secondary opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-surface-container-high rounded-md"
               title="Delete List"
             >
               <Trash2 size={14} className="stroke-2" />
             </button>
           )}
-          <span className="text-xs font-medium text-gray-500 bg-gray-200/50 px-2 py-0.5 rounded-full">{list.cards?.length || 0}</span>
+          <span className="text-xs font-medium text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-full">{list.cards?.length || 0}</span>
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-2 min-h-[10px]">
+      <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 min-h-[10px] py-1">
         {list.cards?.map((card: any) => (
           <CardComponent key={card.id} card={card} boardId={boardId} />
         ))}
       </div>
 
-      <div className="mt-3 pt-2 border-t border-gray-200/50">
+      <div className="mt-3 pt-2">
         {isAdding ? (
           <form 
             action={(formData) => {
@@ -107,12 +107,12 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
               placeholder="Enter card title..."
               required
               autoFocus
-              className="w-full text-sm p-2 rounded-lg border border-gray-200 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none min-h-[60px]"
+              className="w-full text-sm p-2 rounded-xl bg-surface-container-lowest text-on-surface shadow-ambient focus:outline-none focus:ring-1 focus:ring-secondary resize-none min-h-[60px]"
             />
             <div className="flex items-center gap-2">
               <button
                 type="submit"
-                className="bg-gray-800 hover:bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded-md transition-colors"
+                className="bg-primary hover:bg-primary-container text-on-primary text-xs font-medium px-3 py-1.5 rounded-md transition-colors"
                 title="Add Card"
               >
                 Add
@@ -120,7 +120,7 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
               <button
                 type="button"
                 onClick={() => setIsAdding(false)}
-                className="text-gray-500 hover:text-gray-700 text-xs px-2 py-1 transition-colors"
+                className="text-on-surface-variant hover:text-on-surface text-xs px-2 py-1 transition-colors"
               >
                 Cancel
               </button>
@@ -129,7 +129,7 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
         ) : (
           <button
             onClick={() => setIsAdding(true)}
-            className="flex items-center gap-1.5 text-gray-500 hover:text-gray-800 hover:bg-white/50 w-full p-1.5 rounded-lg transition-colors text-sm font-medium"
+            className="flex items-center gap-1.5 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high w-full p-1.5 rounded-md transition-colors text-sm font-medium"
           >
             <Plus size={16} /> Add a card
           </button>

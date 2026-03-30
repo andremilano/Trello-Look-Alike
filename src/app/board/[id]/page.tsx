@@ -24,17 +24,17 @@ export default async function BoardPage({ params }: { params: { id: string } }) 
   );
 
   return (
-    <div className="flex flex-col h-full overflow-hidden bg-gray-50/30">
-      <header className="h-14 border-b border-gray-200 bg-white/50 backdrop-blur-md px-4 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-4">
-          <Link href="/" className="text-gray-500 hover:text-gray-900 transition-colors">
-            <ArrowLeft size={20} />
+    <div className="flex flex-col h-full overflow-hidden bg-surface">
+      <header className="h-20 bg-surface/80 backdrop-blur-[20px] px-8 flex items-center justify-between shrink-0 relative z-10 shadow-ghost">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="text-secondary hover:text-primary transition-colors">
+            <ArrowLeft size={24} />
           </Link>
-          <h2 className="text-[1.75rem] leading-snug font-serif font-medium text-gray-800">{board.title}</h2>
+          <h2 className="text-[1.75rem] leading-snug font-serif font-medium text-on-surface">{board.title}</h2>
         </div>
       </header>
       
-      <div className="flex-1 overflow-x-auto overflow-y-hidden custom-scrollbar">
+      <div className="flex-1 overflow-x-auto overflow-y-hidden custom-scrollbar bg-surface/50">
         <BoardClient board={board} initialLists={listsWithCards} />
       </div>
     </div>

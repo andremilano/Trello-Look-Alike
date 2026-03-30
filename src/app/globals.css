@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FAFAFA;
-  --color-foreground: #1A1A1A;
-  --color-card: #FFFFFF;
-  --color-border: #EAEAEA;
+  --color-surface: #f8f9ff;
+  --color-surface-dim: #dde1e9;
+  --color-surface-bright: #ffffff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eef4ff;
+  --color-surface-container: #e6edf8;
+  --color-surface-container-high: #dde5ef;
+  --color-surface-container-highest: #d4dce5;
+
   --color-primary: #000000;
-  --color-primary-foreground: #FFFFFF;
-  --color-muted: #F3F4F6;
-  --color-muted-foreground: #6B7280;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #101b30;
   
+  --color-secondary: #4a607a;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #cbe3ff;
+
+  --color-tertiary: #e9c176;
+  --color-tertiary-fixed: #ffdea5;
+
+  --color-outline: #74777d;
+  --color-outline-variant: #c4c6cc;
+
+  --color-on-surface: #1a1b1e;
+  --color-on-surface-variant: #44474c;
+
+  --shadow-ambient: 0 20px 40px rgba(0, 29, 54, 0.06);
+  --shadow-ghost: 0 0 0 1px rgba(196, 198, 204, 0.15); /* 15% opacity outline variant */
+
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
 }
 
 @layer base {
   body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
     @apply antialiased md:subpixel-antialiased;
   }
 }
+
 
 .glass {
   background: rgba(255, 255, 255, 0.7);

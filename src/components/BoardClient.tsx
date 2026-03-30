@@ -19,7 +19,7 @@ export default function BoardClient({ board, initialLists }: { board: any, initi
       ))}
 
       {/* Add New List */}
-      <div className="shrink-0 w-72 bg-white/40 backdrop-blur-sm rounded-xl p-3 border border-gray-200/60 shadow-sm border-dashed">
+      <div className="shrink-0 w-72 bg-surface-container-low/50 hover:bg-surface-container-low transition-colors backdrop-blur-sm shadow-ghost rounded-xl p-3">
         <form action={createList}>
           <input type="hidden" name="boardId" value={board.id} />
           <div className="flex items-center gap-2">
@@ -28,13 +28,13 @@ export default function BoardClient({ board, initialLists }: { board: any, initi
               name="title"
               placeholder="Add another list..."
               required
-              className="flex-1 bg-transparent text-sm focus:outline-none placeholder-gray-500 font-medium text-gray-700"
+              className="flex-1 bg-transparent text-sm focus:outline-none placeholder:text-on-surface-variant/60 font-medium text-on-surface px-1"
             />
             <button
               type="submit"
-              className="text-gray-500 hover:text-blue-600 transition-colors bg-white rounded-md p-1.5 shadow-sm border border-gray-200"
+              className="text-on-surface-variant hover:text-on-primary hover:bg-primary transition-colors rounded-md p-1.5 flex items-center justify-center shrink-0"
             >
-              <Plus size={16} />
+              <Plus size={16} /> <span className="sr-only">Add</span>
             </button>
           </div>
         </form>
