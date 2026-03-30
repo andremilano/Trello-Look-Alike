@@ -4,6 +4,7 @@ import './globals.css';
 import Link from 'next/link';
 import { Bell, Settings, Search } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
+import MobileNav from '@/components/MobileNav';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-serif' });
@@ -26,7 +27,8 @@ export default function RootLayout({
 
         {/* Top Navigation Bar */}
         <header className="bg-surface docked full-width top-0 sticky z-40 flex justify-between items-center w-full px-8 py-4 border-b border-outline-variant/20">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-3">
+            <MobileNav />
             <Link href="/" className="text-xl font-extrabold text-on-surface font-serif tracking-tight">ManageIt</Link>
           </div>
           <div className="flex items-center gap-4">

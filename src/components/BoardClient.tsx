@@ -13,7 +13,7 @@ export default function BoardClient({ board, initialLists }: { board: any, initi
   }, [initialLists]);
 
   return (
-    <div className="flex h-full p-4 gap-4 items-start pb-8">
+    <div className="flex h-full items-start p-4 gap-4 pb-8 min-w-max">
       {lists.map((list) => (
         <ListComponent key={list.id} list={list} boardId={board.id} />
       ))}
