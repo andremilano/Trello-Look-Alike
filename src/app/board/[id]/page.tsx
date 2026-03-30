@@ -27,7 +27,7 @@ export default async function BoardPage({ params }: { params: { id: string } }) 
     <div className="flex flex-col h-full overflow-hidden bg-surface">
       <header className="h-20 bg-surface/80 backdrop-blur-[20px] px-8 flex items-center justify-between shrink-0 relative z-10 shadow-ghost">
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-secondary hover:text-primary transition-colors">
+          <Link href="/boards" className="text-secondary hover:text-primary transition-colors">
             <ArrowLeft size={24} />
           </Link>
           <h2 className="text-[1.75rem] leading-snug font-serif font-medium text-on-surface">{board.title}</h2>
