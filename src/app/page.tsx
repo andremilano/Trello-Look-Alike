@@ -10,12 +10,28 @@ export default async function Dashboard() {
   if (!userId) redirect('/sign-in');
 
   const allBoards = await db.select().from(boards).where(eq(boards.userId, userId));
-  const allCards = await db.select().from(cards);
   
-  const completedCardsCount = allCards.filter(c => c.isCompleted).length;
-  const completionRate = allCards.length > 0 ? Math.round((completedCardsCount / allCards.length) * 100) : 0;
+  // To filter cards by user, we join with lists and boards
+  const userCards = await db.select({
+    id: cards.id,
+    title: cards.title,
+    isCompleted: cards.isCompleted,
+    dueDate: cards.dueDate,
+    createdAt: cards.createdAt,
+  })
+    .from(cards)
+    .innerJoin(lists, eq(cards.listId, lists.id))
+    .innerJoin(boards, eq(lists.boardId, boards.id))
+    .where(eq(boards.userId, userId));
+  
+  const completedCardsCount = userCards.filter(c => c.isCompleted).length;
+  const completionRate = userCards.length > 0 ? Math.round((completedCardsCount / userCards.length) * 100) : 0;
 
-  const recentBoards = await db.select().from(boards).orderBy(desc(boards.createdAt)).limit(4);
+  const recentBoards = await db.select().from(boards)
+    .where(eq(boards.userId, userId))
+    .orderBy(desc(boards.createdAt))
+    .limit(4);
+    
   const recentBoardsWithProgress = await Promise.all(recentBoards.map(async b => {
     const bLists = await db.select().from(lists).where(eq(lists.boardId, b.id));
     let bTotal = 0;
@@ -31,13 +47,14 @@ export default async function Dashboard() {
     };
   }));
 
-  const upcomingDeadlines = await db.select()
-    .from(cards)
-    .where(isNotNull(cards.dueDate))
-    .orderBy(asc(cards.dueDate))
-    .limit(3);
+  const upcomingDeadlines = userCards
+    .filter(c => c.dueDate !== null)
+    .sort((a, b) => (a.dueDate || '').localeCompare(b.dueDate || ''))
+    .slice(0, 3);
 
-  const recentActivity = await db.select().from(cards).orderBy(desc(cards.createdAt)).limit(3);
+  const recentActivity = [...userCards]
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .slice(0, 3);
 
   const icons = ['palette', 'architecture', 'design_services', 'brush'];
   const colors = ['bg-primary-fixed text-primary', 'bg-tertiary-fixed text-tertiary', 'bg-secondary-fixed text-secondary', 'bg-surface-container-highest text-on-surface'];
@@ -77,7 +94,7 @@ export default async function Dashboard() {
         <div className="bg-surface-container-high p-8 rounded-xl flex flex-col justify-between shadow-ghost">
           <div>
             <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 block">Total Tasks</span>
-            <p className="text-5xl font-extrabold font-serif tracking-tight">{allCards.length}</p>
+            <p className="text-5xl font-extrabold font-serif tracking-tight">{userCards.length}</p>
           </div>
           <p className="mt-4 text-sm text-on-surface-variant">Across all lists</p>
         </div>
