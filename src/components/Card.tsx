@@ -11,7 +11,7 @@ const CATEGORY_COLORS = [
   'bg-surface-container-high text-on-surface-variant',
 ];
 
-export default function Card({ card, boardId }: { card: any, boardId: string }) {
+export default function Card({ card, boardId, onClick }: { card: any, boardId: string, onClick?: (card: any) => void }) {
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(card.title);
@@ -35,7 +35,8 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
     e.dataTransfer.effectAllowed = 'move';
   };
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (window.confirm('Are you sure you want to delete this card?')) {
       startTransition(() => {
         deleteCard(card.id, boardId);
@@ -55,13 +56,15 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
     setIsEditing(false);
   };
 
-  const handleToggleComplete = () => {
+  const handleToggleComplete = (e: React.MouseEvent) => {
+    e.stopPropagation();
     startTransition(async () => {
       await toggleCardCompletion(card.id, !card.isCompleted, boardId);
     });
   };
 
-  const handleSaveDescription = async () => {
+  const handleSaveDescription = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (description !== card.description) {
       startTransition(async () => {
         await updateCardDescription(card.id, description, boardId);
@@ -70,7 +73,8 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
     setIsEditingDesc(false);
   };
 
-  const handleSaveCategory = async () => {
+  const handleSaveCategory = async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (categoryInput !== card.category || categoryColor !== card.categoryColor) {
       startTransition(async () => {
         await updateCardCategory(card.id, categoryInput, categoryColor, boardId);
@@ -105,7 +109,8 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
     <div
       draggable={!isAnyFieldEditing}
       onDragStart={handleDragStart}
-      className={`group relative bg-surface-container-high rounded-md p-3 shadow-ghost hover:shadow-ambient hover:-translate-y-0.5 hover:bg-surface-container-highest transition-all duration-200 ease-out flex flex-col gap-2 ${!isAnyFieldEditing ? 'cursor-grab active:cursor-grabbing' : ''} ${isPending ? 'opacity-50' : ''} ${card.isCompleted ? 'bg-surface-dim/30' : ''}`}
+      onClick={() => !isAnyFieldEditing && onClick?.(card)}
+      className={`group relative bg-surface-container-high rounded-md p-3 shadow-ghost hover:shadow-ambient hover:-translate-y-0.5 hover:bg-surface-container-highest transition-all duration-200 ease-out flex flex-col gap-2 ${!isAnyFieldEditing ? 'cursor-pointer active:scale-[0.98]' : ''} ${isPending ? 'opacity-50' : ''} ${card.isCompleted ? 'bg-surface-dim/30' : ''}`}
     >
       {/* Category Section */}
       {(card.category || isEditingCategory) && (
@@ -136,7 +141,7 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
           ) : (
              card.category && (
                <div 
-                 onClick={() => setIsEditingCategory(true)}
+                 onClick={(e) => { e.stopPropagation(); setIsEditingCategory(true); }}
                  className={`text-[10px] font-semibold tracking-wide uppercase px-2 py-0.5 rounded cursor-pointer ${card.categoryColor || CATEGORY_COLORS[3]}`}
                >
                  {card.category}
@@ -173,7 +178,7 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
             />
           </form>
         ) : (
-          <p className={`flex-1 min-w-0 break-words break-all text-sm font-medium text-on-surface whitespace-pre-wrap pr-4 leading-relaxed ${card.isCompleted ? 'line-through text-on-surface-variant' : ''}`}>
+          <p className={`flex-1 min-w-0 wrap-break-word break-all text-sm font-medium text-on-surface whitespace-pre-wrap pr-4 leading-relaxed ${card.isCompleted ? 'line-through text-on-surface-variant' : ''}`}>
             {card.title}
           </p>
         )}
@@ -181,29 +186,53 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
         {!isAnyFieldEditing && (
           <div className="absolute -top-1 -right-1 z-20 flex items-center opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-low/90 backdrop-blur-sm shadow-ambient border border-outline-variant/30 rounded-lg p-0.5">
             {(!card.category) && (
-              <button onClick={() => setIsEditingCategory(true)} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Add Category">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsEditingCategory(true); }} 
+                className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" 
+                title="Add Category"
+              >
                 <Tag size={12} />
               </button>
             )}
             {(!card.description || card.description === '') && (
-              <button onClick={() => { setIsDescOpen(true); setIsEditingDesc(true); }} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Add Description">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsDescOpen(true); setIsEditingDesc(true); }} 
+                className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" 
+                title="Add Description"
+              >
                 <AlignLeft size={12} />
               </button>
             )}
             {(!card.dueDate) && (
-              <button onClick={() => setIsEditingDueDate(true)} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Add Due Date">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsEditingDueDate(true); }} 
+                className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" 
+                title="Add Due Date"
+              >
                 <Calendar size={12} />
               </button>
             )}
             {(!card.assigned) && (
-              <button onClick={() => setIsEditingAssigned(true)} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Assign">
+              <button 
+                onClick={(e) => { e.stopPropagation(); setIsEditingAssigned(true); }} 
+                className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" 
+                title="Assign"
+              >
                 <User size={12} />
               </button>
             )}
-            <button onClick={() => setIsEditing(true)} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Edit Card">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsEditing(true); }} 
+              className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" 
+              title="Edit Card"
+            >
               <Pencil size={12} />
             </button>
-            <button onClick={handleDelete} className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" title="Delete Card">
+            <button 
+              onClick={handleDelete} 
+              className="text-on-surface-variant hover:text-secondary hover:bg-surface-container-low rounded-md p-1 transition-colors" 
+              title="Delete Card"
+            >
               <Trash2 size={12} />
             </button>
           </div>
@@ -216,7 +245,7 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
           {(!isEditingDesc && card.description) ? (
             <div 
               className="text-xs text-on-surface-variant bg-surface-container-low/50 p-2 rounded-md cursor-pointer hover:bg-surface-container-low transition-colors"
-              onClick={() => setIsEditingDesc(true)}
+              onClick={(e) => { e.stopPropagation(); setIsEditingDesc(true); }}
             >
               <div className="flex items-center gap-1 mb-1 text-on-surface-variant/70">
                 <AlignLeft size={10} /> <span className="font-semibold uppercase tracking-wider text-[10px]">Description</span>
@@ -264,7 +293,7 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
               </form>
             ) : (
               card.dueDate && (
-                <div onClick={() => setIsEditingDueDate(true)} className="flex items-center gap-1 text-[10px] text-on-surface-variant cursor-pointer hover:text-secondary hover:bg-surface-container-low px-1 py-0.5 rounded transition-colors w-fit">
+                <div onClick={(e) => { e.stopPropagation(); setIsEditingDueDate(true); }} className="flex items-center gap-1 text-[10px] text-on-surface-variant cursor-pointer hover:text-secondary hover:bg-surface-container-low px-1 py-0.5 rounded transition-colors w-fit">
                   <Calendar size={10} />
                   <span>{new Date(card.dueDate).toLocaleDateString()}</span>
                 </div>
@@ -287,7 +316,7 @@ export default function Card({ card, boardId }: { card: any, boardId: string }) 
               </form>
             ) : (
               card.assigned && (
-                <div onClick={() => setIsEditingAssigned(true)} className="flex items-center gap-1 bg-surface-container-high px-1.5 py-0.5 rounded-full cursor-pointer hover:bg-surface-container-highest transition-colors w-fit">
+                <div onClick={(e) => { e.stopPropagation(); setIsEditingAssigned(true); }} className="flex items-center gap-1 bg-surface-container-high px-1.5 py-0.5 rounded-full cursor-pointer hover:bg-surface-container-highest transition-colors w-fit">
                   <div className="w-4 h-4 rounded-full bg-secondary flex items-center justify-center shrink-0">
                     <span className="text-[8px] font-bold text-on-secondary uppercase">{card.assigned.charAt(0)}</span>
                   </div>

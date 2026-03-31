@@ -5,7 +5,7 @@ import CardComponent from './Card';
 import { createCard } from '@/app/actions';
 import { Plus, Trash2 } from 'lucide-react';
 
-export default function List({ list, boardId }: { list: any, boardId: string }) {
+export default function List({ list, boardId, onCardClick }: { list: any, boardId: string, onCardClick?: (card: any) => void }) {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(list.title);
@@ -87,7 +87,7 @@ export default function List({ list, boardId }: { list: any, boardId: string }) 
 
       <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 min-h-[10px] py-1">
         {list.cards?.map((card: any) => (
-          <CardComponent key={card.id} card={card} boardId={boardId} />
+          <CardComponent key={card.id} card={card} boardId={boardId} onClick={onCardClick} />
         ))}
       </div>
 

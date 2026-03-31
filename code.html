@@ -3,7 +3,7 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Dashboard Overview | The Earthbound Editorial</title>
+<title>Task Detail - The Earthbound Editorial</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -76,341 +76,300 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        body {
-            background-color: #fcf9f4;
-            color: #1c1c19;
-            font-family: 'Inter', sans-serif;
-        }
-        .editorial-shadow {
-            box-shadow: 0 10px 32px -4px rgba(28, 28, 25, 0.06);
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
-        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
     </style>
 </head>
-<body class="bg-background text-on-surface">
-<!-- Top Navigation Bar -->
+<body class="bg-background text-on-surface min-h-screen">
+<!-- Top Navigation Shell (Authority Source: Shared Components JSON) -->
 <header class="bg-[#fcf9f4] dark:bg-[#1c1c19] docked full-width top-0 sticky z-50 flex justify-between items-center w-full px-8 py-4">
-<div class="flex items-center gap-8">
+<div class="flex items-center gap-6">
 <span class="text-xl font-extrabold text-[#1c1c19] dark:text-[#fcf9f4] font-['Manrope'] tracking-tight">The Earthbound Editorial</span>
-<nav class="hidden md:flex items-center gap-6 font-['Manrope'] font-bold tracking-tight">
-<a class="text-[#853724] border-b-2 border-[#853724] pb-1" href="#">My Boards</a>
-<a class="text-[#1c1c19] opacity-70 dark:text-[#fcf9f4] hover:bg-[#f6f3ee] transition-colors" href="#">Team Space</a>
-<a class="text-[#1c1c19] opacity-70 dark:text-[#fcf9f4] hover:bg-[#f6f3ee] transition-colors" href="#">Timeline</a>
-</nav>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-[#853724] border-b-2 border-[#853724] pb-1 font-['Manrope'] font-bold tracking-tight" href="#">Timeline</a>
+<a class="text-[#1c1c19] opacity-70 dark:text-[#fcf9f4] font-['Manrope'] font-bold tracking-tight hover:bg-[#f6f3ee] dark:hover:bg-[#2a2a26] transition-colors px-2" href="#">Archive</a>
+</div>
 </div>
 <div class="flex items-center gap-4">
-<div class="relative flex items-center bg-surface-container-low rounded-full px-4 py-1.5 group focus-within:ring-1 ring-primary/20">
-<span class="material-symbols-outlined text-sm opacity-50">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-sm w-48 placeholder:text-on-surface/40" placeholder="Search publications..." type="text"/>
+<div class="bg-surface-container-low rounded-full px-4 py-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm" placeholder="Search boards..." type="text"/>
 </div>
-<button class="p-2 hover:bg-[#f6f3ee] rounded-full transition-colors active:scale-95 duration-150">
-<span class="material-symbols-outlined text-on-surface" data-icon="notifications">notifications</span>
-</button>
-<button class="p-2 hover:bg-[#f6f3ee] rounded-full transition-colors active:scale-95 duration-150">
-<span class="material-symbols-outlined text-on-surface" data-icon="settings">settings</span>
-</button>
-<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20">
-<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="Close-up portrait of a professional man with a friendly expression, soft natural studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBosa99HJMKWpdMOJLwYAFX9sDNwGh1z8Diidg9xa79bDaoIsEDnGMaeElSiRRcnLcAETKqScWAsvzO6Fnknjx2cfQKSnGV1ZdjOY6q8UUTTpPGs18iIkg08W5elr9yH4p-_ZzPkVkBT68Gn8X091RoGLvgu8kjPLuldfbzGJ-dJpM1D4Cc9Ra4xth1TsWPEkJDP3V6u9-fFieLPUzfOSnv7XKodHqxwLEH4SXcY8YZ6A-kkh5s6IrX1Vvn7hVXmESL38qp-0M1jhFl"/>
-</div>
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="settings">settings</span>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant/30" data-alt="close-up portrait of a professional woman with a calm expression in a brightly lit modern studio environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe-dHipiGD2NhQS6SWADXEz2stUWNFzvsEFSX-4-i-7MbC1AE75SfSSW46DW-vd0tKxS0hlnQdhbcCoYr8zQFPWR91vXUU4_OU3WErNC0BpiFUyZ9RtkhfgvBtZgrsbCta3-Q_7qsvqAukXx3O8EFr_idfcht4_hZzriDEEuwaF7TqdglYAFpb70BPwNRNj6gE5RET8yLoG06L1L_D8WXF2-kYi4iYn-sm3Z8DcvT8RDh4JIlYL4fUUaA02Uqke8iDV6khj4csMi76"/>
 </div>
 </header>
 <div class="flex">
-<!-- Side Navigation Bar -->
-<aside class="h-screen w-64 fixed left-0 top-0 pt-20 bg-[#e5e2dd] dark:bg-[#252521] flex flex-col hidden lg:flex">
-<div class="px-4 py-6">
-<div class="flex items-center gap-3 px-4 mb-10">
-<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<!-- Sidebar Navigation (Authority Source: Shared Components JSON) -->
+<aside class="bg-[#e5e2dd] dark:bg-[#252521] h-screen w-64 fixed left-0 top-0 pt-20 flex flex-col py-6 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
 <span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
 </div>
-<div>
-<p class="text-lg font-bold text-[#1c1c19] dark:text-[#fcf9f4] font-['Manrope']">Editorial Studio</p>
-<p class="text-xs opacity-60 font-medium font-['Inter']">Main Workspace</p>
+<span class="text-lg font-bold text-[#1c1c19] dark:text-[#fcf9f4]">Editorial Studio</span>
 </div>
+<p class="text-xs opacity-60 ml-11">Main Workspace</p>
 </div>
-<nav class="space-y-1">
-<a class="flex items-center gap-3 bg-[#fcf9f4] dark:bg-[#1c1c19] text-[#853724] dark:text-[#a44e39] rounded-l-full ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span>My Boards</span>
-</a>
-<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
-<span class="material-symbols-outlined" data-icon="group">group</span>
-<span>Team Space</span>
-</a>
-<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
-<span class="material-symbols-outlined" data-icon="view_timeline">view_timeline</span>
-<span>Timeline</span>
-</a>
-<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
-<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
-<span>Archive</span>
-</a>
-<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
-<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
-<span>Resources</span>
-</a>
+<nav class="flex-1 space-y-1">
+<div class="text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#f6f3ee]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> My Boards
+                </div>
+<div class="text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#f6f3ee]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="group">group</span> Team Space
+                </div>
+<div class="bg-[#fcf9f4] dark:bg-[#1c1c19] text-[#853724] dark:text-[#a44e39] rounded-l-full ml-4 pl-4 py-3 flex items-center gap-3 font-['Inter'] text-sm font-medium translate-x-1 duration-200">
+<span class="material-symbols-outlined" data-icon="view_timeline">view_timeline</span> Timeline
+                </div>
+<div class="text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#f6f3ee]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span> Archive
+                </div>
+<div class="text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 flex items-center gap-3 font-['Inter'] text-sm font-medium hover:bg-[#f6f3ee]/50 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span> Resources
+                </div>
 </nav>
-<div class="mt-10 px-4">
-<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-bold font-['Manrope'] flex items-center justify-center gap-2 active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
-                        New Board
-                    </button>
-</div>
-</div>
-<div class="mt-auto pb-8 border-t border-outline-variant/10 pt-4">
-<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
-<span class="material-symbols-outlined" data-icon="help">help</span>
-<span>Help</span>
-</a>
-<a class="flex items-center gap-3 text-[#1c1c19] dark:text-[#fcf9f4] opacity-60 hover:opacity-100 ml-4 pl-4 py-3 font-['Inter'] text-sm font-medium transition-all hover:bg-[#f6f3ee]/50" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-<span>Logout</span>
-</a>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="flex-1 lg:ml-64 p-8 md:p-12 space-y-12">
-<!-- Dashboard Header Section -->
-<section class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end gap-6">
-<div>
-<h1 class="text-4xl md:text-5xl font-['Manrope'] font-extrabold tracking-tight text-on-surface mb-2">Workspace Overview</h1>
-<p class="text-on-surface-variant font-medium">Welcome back, Arthur. You have 4 deadlines approaching this week.</p>
-</div>
-<div class="flex gap-3">
-<div class="flex -space-x-2">
-<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background object-cover" data-alt="Portrait of a smiling woman with dark hair, natural sunlight outdoor setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0ebBmVJywVv7YLLxFqdYarN7bQIy7e8mBEWKQENIMurKp4bk6jdORInmx3eEN0dszGTzPQWCJq1Hlhax-uk5qx7mr4mcvsPt9L7K9Pjh1HxkVdPbDXHynERTxXTAxKnBHzbv99EZNz3_Hi75kNz5pisYsqq6WSBW-6nAUyFNVYR-VrCNzU90UOYXA9ZAf2rLclzA1KC2ojUZ_iqfYvyp_ZFwyo8tcRnSS-zbDCULPdF0zzEvAr7X-mBIgXMT_B4Jgz4R6sUBx-yW8"/>
-<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background object-cover" data-alt="Portrait of a young man with glasses and a beard, soft indoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8UgnKLuLlvBkJ76KCD5oLLbC0pIQeckqf0Wi5drYhyJ429ReSC-h3VGL0DrtparxoU-TNiylizgpEVf2lUJMFU7oqDTFZVfu9vw1KenjECFO2pP_28i787r8fGgIr2vO03CtUn2I-KnbLdLB0FGfOJJMcgK6ThyqhsjfzWBda2g_Q6wYSj-1iix_4yKUZ5mAUSunLq_QEN2_hZKd2ZCVL1phhdjsPmtNJKFNHXEQ4hO0Dc2xVdXQ2DlPTIW9vE2MX5d2V2t3mUrfT"/>
-<img alt="Team member" class="w-10 h-10 rounded-full border-2 border-background object-cover" data-alt="Portrait of a man with a friendly smile, neutral background, professional headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKZEsoF84iOBVYUjOSiQtHoBn0gmK8ljHnnFK1qIKzfhhh47-1EdjrUrbPSUb9tSzFknlSSG_c3iI4aIHa__09kHOpdqbf75o-_hvkCfpVxLQgmMz8GSH39TmWxmxOlZKYY7LxUgtrAv4sfd5pZS-KRo93-jTwWVuvwSlztjT576A-8sKWRyrTkuhmTiVeUQSf2rPYv17MF5G_mYk-k8MD1AjAolHjJ7yzBKY3B63WSpHoHRp5xWNbO7UZy10bIm8D61dtH3WkMTv_"/>
-<div class="w-10 h-10 rounded-full border-2 border-background bg-surface-container-highest flex items-center justify-center text-xs font-bold text-on-surface-variant">+8</div>
-</div>
-</div>
-</section>
-<!-- High Level Stats Bento Grid -->
-<section class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
-<div class="md:col-span-2 bg-surface-container-low p-8 rounded-xl flex flex-col justify-between editorial-shadow relative overflow-hidden">
-<div class="relative z-10">
-<span class="text-label-sm font-bold uppercase tracking-widest text-primary opacity-80 mb-4 block">Active Projects</span>
-<p class="text-5xl font-extrabold font-['Manrope'] tracking-tight">12</p>
-<p class="mt-4 text-sm text-on-surface-variant max-w-xs">Total production boards currently in circulation across 3 editorial teams.</p>
-</div>
-<div class="absolute right-[-20px] bottom-[-20px] opacity-5 pointer-events-none">
-<span class="material-symbols-outlined text-[160px]" data-icon="grid_view">grid_view</span>
-</div>
-</div>
-<div class="bg-secondary-container p-8 rounded-xl flex flex-col justify-between editorial-shadow">
-<div>
-<span class="text-label-sm font-bold uppercase tracking-widest text-on-secondary-container opacity-80 mb-4 block">Completion Rate</span>
-<p class="text-5xl font-extrabold font-['Manrope'] tracking-tight">84%</p>
-</div>
-<div class="mt-4 flex items-center gap-2 text-secondary font-semibold text-sm">
-<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
-                        +12% this month
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-xl font-medium flex items-center justify-center gap-2 shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="add">add</span> New Board
+                </button>
+<div class="pt-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-3 text-sm opacity-60 hover:opacity-100 py-2 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span> Help
+                    </div>
+<div class="flex items-center gap-3 text-sm opacity-60 hover:opacity-100 py-2 cursor-pointer transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span> Logout
                     </div>
 </div>
-<div class="bg-surface-container-highest p-8 rounded-xl flex flex-col justify-between editorial-shadow">
-<div>
-<span class="text-label-sm font-bold uppercase tracking-widest text-on-surface-variant opacity-80 mb-4 block">Total Tasks</span>
-<p class="text-5xl font-extrabold font-['Manrope'] tracking-tight">142</p>
 </div>
-<p class="mt-4 text-sm text-on-surface-variant">24 tasks assigned to you</p>
+</aside>
+<!-- Main Content Canvas (Background surface tier) -->
+<main class="flex-1 ml-0 md:ml-64 bg-surface-container-low min-h-screen p-8">
+<!-- Overlay Backdrop (Glassmorphism) -->
+<div class="fixed inset-0 bg-on-surface/10 backdrop-blur-sm z-[60] flex items-center justify-center p-4 md:p-12">
+<!-- Modal Container: Level 2 (Cards/Modules) -->
+<div class="bg-surface-container-lowest w-full max-w-5xl h-full max-h-[850px] rounded-xl shadow-[0_32px_64px_-12px_rgba(28,28,25,0.06)] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-300">
+<!-- Modal Header -->
+<div class="px-8 py-6 flex justify-between items-center border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="task_alt">task_alt</span>
+<nav class="flex text-xs font-label text-outline gap-2">
+<span>Editorial Studio</span>
+<span>/</span>
+<span>Spring Issue 2024</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+</button>
+<button class="text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+<button class="bg-surface-container-high w-8 h-8 rounded-full flex items-center justify-center hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface text-sm" data-icon="close">close</span>
+</button>
+</div>
+</div>
+<!-- Modal Body Split Layout -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Column: Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-8 space-y-10">
+<!-- Task Title & Description -->
+<section>
+<h1 class="text-3xl font-headline font-extrabold text-on-surface mb-4 tracking-tight leading-tight">
+                                    Curating the "Earth Tones" Photography Feature
+                                </h1>
+<div class="bg-surface-container-low/50 p-6 rounded-xl border border-outline-variant/5">
+<h3 class="text-sm font-label font-bold text-on-surface-variant mb-2">Description</h3>
+<p class="text-body-md text-on-surface-variant leading-relaxed">
+                                        Coordinate with the creative team to select final imagery for the 12-page spread. Focus on high-contrast landscapes and raw textile textures that align with the "Atelier" aesthetic guidelines. Ensure all selected raw files are converted to CMYK for final print proofing.
+                                    </p>
 </div>
 </section>
-<!-- Main Content Area: Boards & Activity -->
-<section class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
-<!-- Active Boards Gallery -->
-<div class="lg:col-span-2 space-y-8">
-<div class="flex justify-between items-center">
-<h2 class="text-2xl font-['Manrope'] font-bold text-on-surface">Active Boards</h2>
-<button class="text-sm font-bold text-primary hover:underline flex items-center gap-1">
-                            View All <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
-</button>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<!-- Project Card 1 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl editorial-shadow group hover:translate-y-[-4px] transition-transform duration-300">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="palette">palette</span>
-</div>
-<span class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter">In Progress</span>
-</div>
-<h3 class="text-lg font-bold font-['Manrope'] mb-2">Summer Issue 2024</h3>
-<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Curation of seasonal trends, architectural photography, and artisan profiles.</p>
-<div class="space-y-4">
-<div class="flex justify-between items-end text-xs font-bold">
-<span class="text-on-surface-variant">Progress</span>
-<span>65%</span>
-</div>
-<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full" style="width: 65%"></div>
-</div>
-<div class="flex justify-between items-center pt-2">
-<div class="flex -space-x-1.5">
-<img alt="Member" class="w-6 h-6 rounded-full border border-background object-cover" data-alt="Close up portrait of woman with gentle expression" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzmRSdI5GxpwLklufXRbn0t50O1l8-4458BbFPxGGVzB1W218muyK01QXCpy3_Fr1ypFXRJKMNBKxSmwlTn0LvTYJuLFMyeCkMi_nNqn83uUbSor5-1VB4Bm4xwUAu065qewpvpOO2gFhtyj5oZUevToBKN_RqwTBqFsnanQDUN35H4pxTbMgZRyS3AGTJbodBQadDQrNwy07NXA6kD7CmBulYXPHnkNgo2PtQb9I2xuTwckyJwv7s9d8soRkJMOOrQbWdmWLe9Eku"/>
-<img alt="Member" class="w-6 h-6 rounded-full border border-background object-cover" data-alt="Portrait of a young man looking directly into the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_E29RB0MJL6c9h1lt-PF8bqv2xVba6doExdjynSUS3hjGAgnLiqceZnl2wQbP3_IquWFTotObgKg8922ZV__qiT7cVx6ikTdDzgrPwFgas_CEc7b4slrmPytvNlRY4E3Rdl8d9p-4DfzJqeOmJSwZjfhTLlP7z6stpvvb9PFOQNZuOjh0t_jv-MZW9R0KLvZNndYN6Ra21lB1TIq6piGUHXvdsmMtz4efUMCnHHsh5aniktJrvQT3QdaZJoZx_JeiU_7R_RA270sV"/>
-</div>
-<span class="text-[10px] font-medium text-on-surface-variant">Updated 2h ago</span>
-</div>
-</div>
-</div>
-<!-- Project Card 2 -->
-<div class="bg-surface-container-lowest p-6 rounded-xl editorial-shadow group hover:translate-y-[-4px] transition-transform duration-300">
-<div class="flex justify-between items-start mb-6">
-<div class="w-12 h-12 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
-<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
-</div>
-<span class="bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-tighter">Reviewing</span>
-</div>
-<h3 class="text-lg font-bold font-['Manrope'] mb-2">Heritage Monograph</h3>
-<p class="text-sm text-on-surface-variant mb-6 line-clamp-2">Detailed documentation of Brutalist architecture in Eastern Europe.</p>
-<div class="space-y-4">
-<div class="flex justify-between items-end text-xs font-bold">
-<span class="text-on-surface-variant">Progress</span>
-<span>32%</span>
-</div>
-<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
-<div class="h-full bg-tertiary rounded-full" style="width: 32%"></div>
-</div>
-<div class="flex justify-between items-center pt-2">
-<div class="flex -space-x-1.5">
-<img alt="Member" class="w-6 h-6 rounded-full border border-background object-cover" data-alt="Portrait of a young woman with a thoughtful gaze" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2ouOWCuE4i2BjvR4Eb_41G1WvEnAAZVHI1lRHA-JAhXtNW34ddAlK4Olhj3Ue8nJpBhrFn4aLG_jMTgpZycunIZyKV4SVIeJI5HpjmwnPVdafE8gdIR4ul3-ogWRapy86VkhplDEGRhbeO3tr3CKlkvGHSYONZC_cxSdxtXeualynZz3Sg9EIufKfq3kYnKMAnQY2e9nBwwLPN--ohFiGU80PPsqLKW1uHOES1lwnMaWGi8mfn-FFqOiyxuvvDLsrTMBRGtsWnr_a"/>
-<div class="w-6 h-6 rounded-full border border-background bg-surface-container-high flex items-center justify-center text-[8px] font-bold">+2</div>
-</div>
-<span class="text-[10px] font-medium text-on-surface-variant">Updated 1d ago</span>
-</div>
-</div>
-</div>
-<!-- Project Card 3 (Visual Layout) -->
-<div class="bg-surface-container-low md:col-span-2 p-6 rounded-xl editorial-shadow flex flex-col md:flex-row gap-8 items-center border border-outline-variant/10">
-<div class="w-full md:w-48 h-32 rounded-lg overflow-hidden shrink-0">
-<img alt="Draft" class="w-full h-full object-cover" data-alt="Candid shot of fountain pen writing on cream colored paper with soft focus study background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnjoE7vriOd2uUKmPd7PRowZkPFlGO4dunhTbXlV-j8jvO2SJHu53pcNB1ZF-qYoeNAyNwuCOexlLED92WgzwZUVpTWxfAPFhBnUggrbeLWkdRrhkHPszZPgzWsCg_LS6TJeYvOZRtmL1n4R1QT05kJqTEjALcbgWUsLOnQgnWCySkrwEGggqFxKLZu6qNCBjonk1FvH8ijYtxo_dm78OQsvc5GhdYrqgloKH_zXtUg1sbS7GteIXkNE6eYurflxp-GMA4XdF504pC"/>
-</div>
-<div class="flex-1">
-<div class="flex items-center gap-3 mb-2">
-<h3 class="text-lg font-bold font-['Manrope']">The Hand-Pressed Archive</h3>
-<span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded text-[10px] font-bold">Planning</span>
-</div>
-<p class="text-sm text-on-surface-variant mb-4">A collaborative space for documenting vintage letterpress techniques and ink recipes.</p>
-<div class="flex items-center gap-6">
+<!-- Checklist Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
 <div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm opacity-40" data-icon="forum">forum</span>
-<span class="text-xs font-bold">14 Comments</span>
+<span class="material-symbols-outlined text-primary" data-icon="checklist">checklist</span>
+<h3 class="text-lg font-headline font-bold">Production Milestones</h3>
 </div>
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-sm opacity-40" data-icon="attach_file">attach_file</span>
-<span class="text-xs font-bold">8 Files</span>
+<span class="text-xs font-label bg-secondary-container text-on-secondary-container px-2 py-1 rounded-full">4 / 6 Complete</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-3 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="text-sm text-outline line-through">Initial moodboard review with Creative Director</span>
+</div>
+<div class="flex items-center gap-3 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle" data-weight="fill">check_circle</span>
+<span class="text-sm text-outline line-through">Contact photographers for high-res assets</span>
+</div>
+<div class="flex items-center gap-3 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<span class="material-symbols-outlined text-on-surface/20" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="text-sm text-on-surface">Final selection of 12 hero images</span>
+</div>
+<div class="flex items-center gap-3 p-3 hover:bg-surface-container-low rounded-lg transition-colors group">
+<span class="material-symbols-outlined text-on-surface/20" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<span class="text-sm text-on-surface">Convert assets to .TIFF editorial standard</span>
+</div>
+<button class="text-xs font-bold text-primary flex items-center gap-1 mt-2 ml-3">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span> Add an item
+                                    </button>
+</div>
+</section>
+<!-- Attachments (Bento style) -->
+<section>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="attach_file">attach_file</span>
+<h3 class="text-lg font-headline font-bold">Editorial Assets</h3>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="group relative aspect-video rounded-xl overflow-hidden border border-outline-variant/20 hover:border-primary/40 transition-all cursor-pointer">
+<img alt="Mountain landscape" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="sweeping cinematic view of rolling green hills under a dramatic stormy sky with soft rays of light breaking through" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDKGAY7mS357mqNNNf_90UWmKV_g-6zYus3Jd_EvyD-Jr01cCjxR-99pVJrfMug-8tgR0jeAGvliInrNtH9IxowEAMGWQBua0IUoPMlJyXjvtBBR4-nuZFEfqapNF7_1FJp3YT0BKcU8VjpmSAdRcy_PEa5iI7ZmiV-56-tyeFrf7k4k_8Q3X8FFIgW_gaUQ51SXzUNZ9l_sXeqXpA6ecEO1l8HwQmA3B-IAfHOPowtDu7giEuDDuEJqtrXnO-WqqZz_9svRG6nOn4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<span class="text-[10px] text-white font-medium uppercase tracking-widest">Landscape_01.jpg</span>
+</div>
+</div>
+<div class="group relative aspect-video rounded-xl overflow-hidden border border-outline-variant/20 hover:border-primary/40 transition-all cursor-pointer">
+<img alt="Texture detail" class="w-full h-full object-cover transition-transform group-hover:scale-105" data-alt="extreme close up of raw organic linen fabric showing intricate weave and earthy beige fibers in soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFSYLeaenUKIn5yxuStk127UzCuqBwGQIEr7GJrva_Ak-qPFMTTrrB-FGlH4fKCL6F3Pt3Sqr4fOvewKY1iGcKeIUrFqcZmXjpgYdDactBP6VfE7gAEwMPUHxtuO057mjSFEiOhoxSKFXA60ZfjGpZUrZiC19xkJfJ657cgP33c86luguR28PLybKkmHcQh-81N-BhEdMSUzVuP2NOWAXanCyE2fe5v9orPSUR5Sp_RVayj1ZDc45cBA9nZZtYpcqH2vJaUF50pV30"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<span class="text-[10px] text-white font-medium uppercase tracking-widest">Texture_Raw_Linen.tiff</span>
 </div>
 </div>
 </div>
-<button class="p-3 bg-surface-container-lowest rounded-full border border-outline-variant/20 hover:bg-white transition-colors">
-<span class="material-symbols-outlined" data-icon="arrow_forward_ios">arrow_forward_ios</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Right Sidebar: Deadlines & Activity -->
-<div class="space-y-10">
-<!-- Upcoming Deadlines -->
-<div class="bg-surface-container-low p-8 rounded-xl editorial-shadow">
-<div class="flex items-center justify-between mb-8">
-<h2 class="text-xl font-['Manrope'] font-bold">Deadlines</h2>
-<span class="material-symbols-outlined text-primary" data-icon="calendar_today">calendar_today</span>
+</section>
+<!-- Activity Log / Comments -->
+<section class="pb-8">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="chat_bubble">chat_bubble</span>
+<h3 class="text-lg font-headline font-bold">Activity Log</h3>
 </div>
 <div class="space-y-6">
 <div class="flex gap-4">
-<div class="flex flex-col items-center justify-center w-12 h-14 bg-surface-container-highest rounded-lg border border-outline-variant/10">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant">Jun</span>
-<span class="text-lg font-extrabold font-['Manrope']">18</span>
-</div>
+<img alt="Team member" class="w-8 h-8 rounded-full" data-alt="portrait of a creative man with glasses and a thoughtful expression in a minimalist office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6fDUUR-d-EI4bIIm5qn0z73V1-S-PZDr05sp9FiR5reYlotH3Mbq8JtF8Ba7vRm5woqN21BSFHJIBxCvrjoTQbVHQ8IfqEVjygOe0Od1UqyJr_MKcJH0S-oItdULu2sYjvdRULb7vh5utJWsW1VVqTVSG9h-1V0ayIpu9jyv8RSzJc-MDgD7pWZDGbkn0UOzzEmbUPmG3KTUhPTa_a_Ay0Z5cuaSiHBMRO3aM4KfKdrgxQ5pbGHTSPpwpaMSH41QAADAHxB2ujNNS"/>
 <div>
-<p class="text-sm font-bold leading-tight">Moodboard Approval</p>
-<p class="text-[11px] font-medium text-primary mt-1">Due in 2 days</p>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-sm font-bold">Julian Rivers</span>
+<span class="text-[10px] text-outline">Yesterday at 4:20 PM</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl text-sm leading-relaxed text-on-surface-variant">
+                                                I've uploaded the primary textures. Let's make sure the saturation on the green tones doesn't wash out during the proofing stage.
+                                            </div>
 </div>
 </div>
 <div class="flex gap-4">
-<div class="flex flex-col items-center justify-center w-12 h-14 bg-surface-container-highest rounded-lg border border-outline-variant/10">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant">Jun</span>
-<span class="text-lg font-extrabold font-['Manrope']">21</span>
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed font-bold text-xs">
+                                            EA
+                                        </div>
+<div class="flex-1">
+<div class="bg-surface-container-low rounded-xl border border-outline-variant/10 focus-within:border-primary/50 transition-all overflow-hidden">
+<textarea class="w-full bg-transparent border-none focus:ring-0 p-4 text-sm resize-none" placeholder="Write a comment..." rows="2"></textarea>
+<div class="px-4 py-2 flex justify-between items-center bg-surface-container/50">
+<div class="flex gap-2 text-outline">
+<span class="material-symbols-outlined text-sm cursor-pointer" data-icon="mood">mood</span>
+<span class="material-symbols-outlined text-sm cursor-pointer" data-icon="alternate_email">alternate_email</span>
+<span class="material-symbols-outlined text-sm cursor-pointer" data-icon="image">image</span>
 </div>
-<div>
-<p class="text-sm font-bold leading-tight">Typography Proofs</p>
-<p class="text-[11px] font-medium text-on-surface-variant mt-1">Due in 5 days</p>
-</div>
-</div>
-<div class="flex gap-4">
-<div class="flex flex-col items-center justify-center w-12 h-14 bg-surface-container-highest rounded-lg border border-outline-variant/10">
-<span class="text-[10px] uppercase font-bold text-on-surface-variant">Jun</span>
-<span class="text-lg font-extrabold font-['Manrope']">25</span>
-</div>
-<div>
-<p class="text-sm font-bold leading-tight">Color Theory Draft</p>
-<p class="text-[11px] font-medium text-on-surface-variant mt-1">Due in 9 days</p>
-</div>
-</div>
-</div>
-<button class="w-full mt-8 py-3 bg-surface-container-highest text-on-surface text-sm font-bold rounded-lg hover:bg-surface-container-high transition-colors">
-                            Full Calendar
-                        </button>
-</div>
-<!-- Recent Activity -->
-<div>
-<h2 class="text-xl font-['Manrope'] font-bold mb-6">Recent Activity</h2>
-<div class="space-y-6 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/30">
-<div class="flex gap-4 relative">
-<div class="w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center z-10">
-<span class="material-symbols-outlined text-[12px] text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-</div>
-<div>
-<p class="text-xs text-on-surface"><strong>Sarah L.</strong> completed task <em>"Refine paper stock options"</em></p>
-<p class="text-[10px] text-on-surface-variant font-medium mt-1">14 minutes ago</p>
-</div>
-</div>
-<div class="flex gap-4 relative">
-<div class="w-6 h-6 rounded-full bg-primary-fixed flex items-center justify-center z-10">
-<span class="material-symbols-outlined text-[12px] text-primary" style="font-variation-settings: 'FILL' 1;">add_circle</span>
-</div>
-<div>
-<p class="text-xs text-on-surface"><strong>Arthur W.</strong> added 4 new images to <em>Summer Issue</em> moodboard</p>
-<p class="text-[10px] text-on-surface-variant font-medium mt-1">2 hours ago</p>
-</div>
-</div>
-<div class="flex gap-4 relative">
-<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center z-10">
-<span class="material-symbols-outlined text-[12px] text-on-surface" style="font-variation-settings: 'FILL' 1;">chat</span>
-</div>
-<div>
-<p class="text-xs text-on-surface"><strong>Michael K.</strong> commented on <em>Heritage Monograph</em></p>
-<p class="text-[10px] text-on-surface-variant font-medium mt-1">5 hours ago</p>
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-full text-xs font-bold shadow-sm">Send</button>
 </div>
 </div>
 </div>
 </div>
 </div>
 </section>
+</div>
+<!-- Right Column: Settings (Static Sidebar within Modal) -->
+<div class="w-80 border-l border-outline-variant/10 bg-surface-container-low/30 p-8 space-y-8 overflow-y-auto">
+<!-- Status & Priority -->
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Workflow State</h4>
+<div class="space-y-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-medium text-on-surface-variant">Status</label>
+<div class="flex items-center justify-between bg-surface-container-lowest px-3 py-2 rounded-lg border border-outline-variant/10 cursor-pointer">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-xs font-bold">In Production</span>
+</div>
+<span class="material-symbols-outlined text-sm" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-xs font-medium text-on-surface-variant">Priority</label>
+<div class="flex items-center justify-between bg-tertiary-fixed px-3 py-2 rounded-lg cursor-pointer">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-on-tertiary-fixed" data-icon="priority_high">priority_high</span>
+<span class="text-xs font-bold text-on-tertiary-fixed">High Impact</span>
+</div>
+<span class="material-symbols-outlined text-sm text-on-tertiary-fixed" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Meta Details -->
+<div>
+<h4 class="text-[10px] font-bold uppercase tracking-widest text-outline mb-3">Attributes</h4>
+<div class="space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs text-on-surface-variant">Due Date</span>
+</div>
+<span class="text-xs font-bold">May 12, 2024</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="person">person</span>
+<span class="text-xs text-on-surface-variant">Assignee</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold">Elena Vance</span>
+<img alt="Assignee" class="w-5 h-5 rounded-full" data-alt="headshot of a young professional woman with auburn hair in a soft-focus office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJhmVY2-VKtwwgVNYqa16evtmwuiy8XWygNtocACwQ2gYrpdvPuLGFg09_zLALXt34XmffFkipx9XcahkESLw75ckFsIPVOZciszK9YcmnrRdKZ6zRGKOyXies_5J6lxdfvrT-Bjx5PbRciUorab2tFAB7mkdSOywyWphK7gtQ7SEffOuF3wj_KfaWAkv9ZkWodEB4FIaqZzWlo2tXlyw-YpDzbivhmh4I8xV1wSh8_WiU7aMQQg4Ox8KArNLsY4oN8vSAocN22aOH"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="sell">sell</span>
+<span class="text-xs text-on-surface-variant">Labels</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold">Visuals</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed-variant px-2 py-0.5 rounded text-[10px] font-bold">Spring_24</span>
+<button class="bg-surface-container-high w-5 h-5 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px]" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Danger Zone / Actions -->
+<div class="pt-8 mt-4 border-t border-outline-variant/10">
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-outline-variant/30 text-xs font-bold hover:bg-surface-container-highest transition-colors mb-3">
+<span class="material-symbols-outlined text-sm" data-icon="archive">archive</span> Archive Task
+                                </button>
+<button class="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-error text-xs font-bold hover:bg-error-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span> Delete Forever
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Page Content Placeholder (Behind the modal) -->
+<div class="max-w-7xl mx-auto space-y-8 opacity-40 pointer-events-none">
+<div class="flex justify-between items-end">
+<div>
+<p class="text-sm font-label text-primary font-bold mb-2">Workspace / Spring Issue</p>
+<h2 class="text-4xl font-headline font-extrabold tracking-tight">Timeline</h2>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface h-64 rounded-xl"></div>
+<div class="bg-surface h-64 rounded-xl"></div>
+<div class="bg-surface h-64 rounded-xl"></div>
+</div>
+</div>
 </main>
 </div>
-<!-- Mobile Navigation Bar -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#fcf9f4] border-t border-outline-variant/10 px-6 py-4 flex justify-between items-center z-50">
-<button class="flex flex-col items-center gap-1 text-primary">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span class="text-[10px] font-bold">Boards</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-on-surface opacity-60">
-<span class="material-symbols-outlined" data-icon="group">group</span>
-<span class="text-[10px] font-bold">Team</span>
-</button>
-<div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center text-on-primary shadow-lg -translate-y-6">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</div>
-<button class="flex flex-col items-center gap-1 text-on-surface opacity-60">
-<span class="material-symbols-outlined" data-icon="view_timeline">view_timeline</span>
-<span class="text-[10px] font-bold">Timeline</span>
-</button>
-<button class="flex flex-col items-center gap-1 text-on-surface opacity-60">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-<span class="text-[10px] font-bold">Profile</span>
-</button>
-</nav>
 </body></html>
