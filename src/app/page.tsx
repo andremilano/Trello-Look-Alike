@@ -171,7 +171,7 @@ export default async function Dashboard() {
 
           <div>
             <h2 className="text-xl font-serif font-bold mb-6">Recent Additions</h2>
-            <div className="space-y-6 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/30">
+            <div className="space-y-6 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-px before:bg-outline-variant/30">
               {recentActivity.map((card, i) => (
                 <div key={card.id} className="flex gap-4 relative">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center z-10 ${i % 2 === 0 ? 'bg-primary-fixed text-primary' : 'bg-surface-container-highest text-on-surface'}`}>
