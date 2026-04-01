@@ -1,15 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
 import CardComponent from './Card';
-import { createCard } from '@/app/actions';
+import { createCard, deleteList, updateList, updateCardList } from '@/app/actions';
 import { Plus, Trash2 } from 'lucide-react';
+import { OptimisticAction } from './BoardClient';
 
-export default function List({ list, boardId, onCardClick }: { list: any, boardId: string, onCardClick?: (card: any) => void }) {
+export default function List({ 
+  list, 
+  boardId, 
+  onCardClick, 
+  addOptimisticAction 
+}: { 
+  list: any, 
+  boardId: string, 
+  onCardClick?: (card: any) => void,
+  addOptimisticAction: (action: OptimisticAction) => void
+}) {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(list.title);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [isTransitioning, startTransition] = useTransition();
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -20,33 +31,57 @@ export default function List({ list, boardId, onCardClick }: { list: any, boardI
     const cardId = e.dataTransfer.getData('cardId');
     if (!cardId) return;
     
-    import('@/app/actions').then(({ updateCardList }) => {
-      updateCardList(cardId, list.id, boardId);
+    startTransition(async () => {
+      addOptimisticAction({ type: 'MOVE_CARD', payload: { cardId, newListId: list.id } });
+      await updateCardList(cardId, list.id, boardId);
     });
   };
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this list? All cards inside will be deleted.')) {
-      setIsDeleting(true);
-      const { deleteList } = await import('@/app/actions');
-      await deleteList(list.id, boardId);
+      startTransition(async () => {
+        addOptimisticAction({ type: 'DELETE_LIST', payload: list.id });
+        await deleteList(list.id, boardId);
+      });
     }
   };
 
   const handleSaveTitle = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (title.trim() && title !== list.title) {
-      const { updateList } = await import('@/app/actions');
-      await updateList(list.id, title, boardId);
+      startTransition(async () => {
+        addOptimisticAction({ type: 'UPDATE_LIST', payload: { id: list.id, title: title.trim() } });
+        await updateList(list.id, title, boardId);
+      });
     } else {
       setTitle(list.title);
     }
     setIsEditing(false);
   };
 
+  const handleCreateCard = async (formData: FormData) => {
+    const cardTitle = formData.get('title') as string;
+    if (!cardTitle) return;
+
+    const newCard = {
+      id: crypto.randomUUID(),
+      listId: list.id,
+      title: cardTitle.trim(),
+      order: (list.cards?.length || 0),
+      createdAt: new Date(),
+      isCompleted: false,
+    };
+
+    startTransition(async () => {
+      addOptimisticAction({ type: 'ADD_CARD', payload: { listId: list.id, card: newCard } });
+      setIsAdding(false);
+      await createCard(formData);
+    });
+  };
+
   return (
     <div 
-      className={`group shrink-0 w-72 bg-surface-container-low shadow-ghost rounded-xl p-3 flex flex-col max-h-full transition-opacity ${isDeleting ? 'opacity-50' : ''}`}
+      className={`group shrink-0 w-72 bg-surface-container-low shadow-ghost rounded-xl p-3 flex flex-col max-h-full transition-opacity ${isTransitioning ? 'opacity-70' : ''}`}
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -87,17 +122,20 @@ export default function List({ list, boardId, onCardClick }: { list: any, boardI
 
       <div className="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-3 min-h-[10px] py-1">
         {list.cards?.map((card: any) => (
-          <CardComponent key={card.id} card={card} boardId={boardId} onClick={onCardClick} />
+          <CardComponent 
+            key={card.id} 
+            card={card} 
+            boardId={boardId} 
+            onClick={onCardClick}
+            addOptimisticAction={addOptimisticAction}
+          />
         ))}
       </div>
 
       <div className="mt-3 pt-2">
         {isAdding ? (
           <form 
-            action={(formData) => {
-              createCard(formData);
-              setIsAdding(false);
-            }} 
+            action={handleCreateCard} 
             className="flex flex-col gap-2"
           >
             <input type="hidden" name="listId" value={list.id} />

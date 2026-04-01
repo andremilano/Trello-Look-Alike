@@ -11,6 +11,7 @@ import {
   deleteCard
 } from '@/app/actions';
 import { X, Calendar, User, Tag, Trash2, Archive, Share2, MoreHorizontal, CheckCircle2, Circle, AlignLeft, ChevronDown } from 'lucide-react';
+import { OptimisticAction } from './BoardClient';
 
 const CATEGORY_COLORS = [
   'bg-tertiary-fixed text-on-surface',
@@ -19,7 +20,17 @@ const CATEGORY_COLORS = [
   'bg-surface-container-high text-on-surface-variant',
 ];
 
-export default function CardDetailModal({ card, boardId, onClose }: { card: any, boardId: string, onClose: () => void }) {
+export default function CardDetailModal({ 
+  card, 
+  boardId, 
+  onClose,
+  addOptimisticAction
+}: { 
+  card: any, 
+  boardId: string, 
+  onClose: () => void,
+  addOptimisticAction: (action: OptimisticAction) => void
+}) {
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState(card?.title || '');
   const [description, setDescription] = useState(card?.description || '');
@@ -46,14 +57,18 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
   };
 
   const handleToggleComplete = () => {
-    startTransition(() => toggleCardCompletion(card.id, !card.isCompleted, boardId));
+    startTransition(async () => {
+      addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, isCompleted: !card.isCompleted } });
+      await toggleCardCompletion(card.id, !card.isCompleted, boardId);
+    });
   };
 
   const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this card?')) {
-      startTransition(() => {
-        deleteCard(card.id, boardId);
+      startTransition(async () => {
+        addOptimisticAction({ type: 'DELETE_CARD', payload: card.id });
         onClose();
+        await deleteCard(card.id, boardId);
       });
     }
   };
@@ -102,7 +117,14 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
               <textarea
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                onBlur={() => title !== card.title && startTransition(() => updateCardTitle(card.id, title, boardId))}
+                onBlur={() => {
+                  if (title !== card.title) {
+                    startTransition(async () => {
+                      addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, title } });
+                      await updateCardTitle(card.id, title, boardId);
+                    });
+                  }
+                }}
                 className="w-full text-3xl font-serif font-extrabold text-on-surface bg-transparent border-none focus:ring-0 p-0 resize-none leading-tight tracking-tight placeholder:text-outline-variant"
                 placeholder="Task title..."
                 rows={2}
@@ -116,7 +138,14 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  onBlur={() => description !== card.description && startTransition(() => updateCardDescription(card.id, description, boardId))}
+                  onBlur={() => {
+                    if (description !== card.description) {
+                      startTransition(async () => {
+                        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, description } });
+                        await updateCardDescription(card.id, description, boardId);
+                      });
+                    }
+                  }}
                   className="w-full text-sm text-on-surface-variant bg-transparent border-none focus:ring-0 p-0 resize-none leading-relaxed placeholder:text-outline-variant/50 min-h-[120px]"
                   placeholder="Add a more detailed description..."
                 />
@@ -169,7 +198,10 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
                   onChange={(e) => {
                     const val = e.target.value;
                     setDueDate(val);
-                    startTransition(() => updateCardDueDate(card.id, val, boardId));
+                    startTransition(async () => {
+                      addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, dueDate: val } });
+                      await updateCardDueDate(card.id, val, boardId);
+                    });
                   }}
                   className="text-xs font-bold bg-transparent border-none focus:ring-0 p-0 text-right cursor-pointer hover:text-primary transition-colors"
                 />
@@ -185,7 +217,14 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
                   type="text"
                   value={assigned}
                   onChange={(e) => setAssigned(e.target.value)}
-                  onBlur={() => assigned !== card.assigned && startTransition(() => updateCardAssigned(card.id, assigned, boardId))}
+                  onBlur={() => {
+                    if (assigned !== card.assigned) {
+                      startTransition(async () => {
+                        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, assigned } });
+                        await updateCardAssigned(card.id, assigned, boardId);
+                      });
+                    }
+                  }}
                   placeholder="No one"
                   className="text-xs font-bold bg-transparent border-none focus:ring-0 p-0 text-right w-24 placeholder:text-outline-variant/40"
                 />
@@ -202,7 +241,14 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
                     type="text"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
-                    onBlur={() => category !== card.category && startTransition(() => updateCardCategory(card.id, category, card.categoryColor || CATEGORY_COLORS[3], boardId))}
+                    onBlur={() => {
+                      if (category !== card.category) {
+                        startTransition(async () => {
+                          addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, category, categoryColor: card.categoryColor || CATEGORY_COLORS[3] } });
+                          await updateCardCategory(card.id, category, card.categoryColor || CATEGORY_COLORS[3], boardId);
+                        });
+                      }
+                    }}
                     placeholder="Add label..."
                     className="w-full text-[10px] font-bold bg-surface-container-high/50 hover:bg-surface-container-high px-3 py-1.5 rounded-lg border-none focus:ring-1 focus:ring-primary/30 transition-all placeholder:text-outline-variant/50"
                   />
@@ -210,7 +256,12 @@ export default function CardDetailModal({ card, boardId, onClose }: { card: any,
                     {CATEGORY_COLORS.map(c => (
                       <button 
                         key={c}
-                        onClick={() => startTransition(() => updateCardCategory(card.id, category, c, boardId))}
+                        onClick={() => {
+                          startTransition(async () => {
+                            addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, categoryColor: c, category } });
+                            await updateCardCategory(card.id, category, c, boardId);
+                          });
+                        }}
                         className={`w-5 h-5 rounded-full border border-white/50 shadow-sm transition-transform hover:scale-110 ${c} ${card.categoryColor === c ? 'ring-2 ring-primary ring-offset-2' : ''}`}
                       />
                     ))}

@@ -3,6 +3,7 @@
 import { deleteCard, updateCardTitle, toggleCardCompletion, updateCardDescription, updateCardDueDate, updateCardCategory, updateCardAssigned } from '@/app/actions';
 import { Trash2, Pencil, AlignLeft, CheckSquare, Square, Tag, User, Calendar } from 'lucide-react';
 import { useTransition, useState } from 'react';
+import { OptimisticAction } from './BoardClient';
 
 const CATEGORY_COLORS = [
   'bg-tertiary-fixed text-on-surface',
@@ -11,7 +12,17 @@ const CATEGORY_COLORS = [
   'bg-surface-container-high text-on-surface-variant',
 ];
 
-export default function Card({ card, boardId, onClick }: { card: any, boardId: string, onClick?: (card: any) => void }) {
+export default function Card({ 
+  card, 
+  boardId, 
+  onClick, 
+  addOptimisticAction 
+}: { 
+  card: any, 
+  boardId: string, 
+  onClick?: (card: any) => void,
+  addOptimisticAction: (action: OptimisticAction) => void
+}) {
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(card.title);
@@ -38,8 +49,9 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (window.confirm('Are you sure you want to delete this card?')) {
-      startTransition(() => {
-        deleteCard(card.id, boardId);
+      startTransition(async () => {
+        addOptimisticAction({ type: 'DELETE_CARD', payload: card.id });
+        await deleteCard(card.id, boardId);
       });
     }
   };
@@ -48,6 +60,7 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
     e?.preventDefault();
     if (title.trim() && title !== card.title) {
       startTransition(async () => {
+        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, title: title.trim() } });
         await updateCardTitle(card.id, title, boardId);
       });
     } else {
@@ -59,6 +72,7 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
   const handleToggleComplete = (e: React.MouseEvent) => {
     e.stopPropagation();
     startTransition(async () => {
+      addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, isCompleted: !card.isCompleted } });
       await toggleCardCompletion(card.id, !card.isCompleted, boardId);
     });
   };
@@ -67,6 +81,7 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
     e?.stopPropagation();
     if (description !== card.description) {
       startTransition(async () => {
+        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, description } });
         await updateCardDescription(card.id, description, boardId);
       });
     }
@@ -77,6 +92,7 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
     e?.stopPropagation();
     if (categoryInput !== card.category || categoryColor !== card.categoryColor) {
       startTransition(async () => {
+        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, category: categoryInput, categoryColor } });
         await updateCardCategory(card.id, categoryInput, categoryColor, boardId);
       });
     }
@@ -87,6 +103,7 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
     e?.preventDefault();
     if (assignedInput !== card.assigned) {
       startTransition(async () => {
+        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, assigned: assignedInput } });
         await updateCardAssigned(card.id, assignedInput, boardId);
       });
     }
@@ -97,6 +114,7 @@ export default function Card({ card, boardId, onClick }: { card: any, boardId: s
     e?.preventDefault();
     if (dueDateInput !== card.dueDate) {
       startTransition(async () => {
+        addOptimisticAction({ type: 'UPDATE_CARD', payload: { id: card.id, dueDate: dueDateInput } });
         await updateCardDueDate(card.id, dueDateInput, boardId);
       });
     }
