@@ -2,10 +2,11 @@ import type { Metadata } from 'next';
 import { Inter, Manrope } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
-import { Bell, Settings, Search } from 'lucide-react';
+import { Bell, Settings, Search, Shield } from 'lucide-react';
 import Sidebar from '@/components/Sidebar';
 import MobileNav from '@/components/MobileNav';
 import { ClerkProvider, UserButton } from '@clerk/nextjs';
+import { getUserRole } from '@/app/actions';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-serif' });
@@ -15,11 +16,12 @@ export const metadata: Metadata = {
   description: 'A beautiful, minimalist project management tool.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const role = await getUserRole();
   return (
     <ClerkProvider>
       <html lang="en">
@@ -43,6 +45,12 @@ export default function RootLayout({
               <button className="p-2 hover:bg-surface-container-low rounded-full transition-colors">
                 <Settings className="w-5 h-5 text-on-surface" />
               </button>
+              {role === 'manager' && (
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-fixed border border-primary/20 text-primary text-xs font-bold uppercase tracking-wider">
+                  <Shield className="w-3.5 h-3.5 fill-primary/10 animate-pulse" />
+                  <span>Manager View</span>
+                </div>
+              )}
               <UserButton appearance={{ elements: { avatarBox: 'w-8 h-8' } }} />
             </div>
           </header>

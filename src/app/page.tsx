@@ -1,51 +1,100 @@
 import { db } from '@/db';
 import { boards, lists, cards } from '@/db/schema';
-import { eq, desc, asc, isNotNull, and } from 'drizzle-orm';
+import { eq, desc, asc, isNotNull, and, inArray } from 'drizzle-orm';
 import Link from 'next/link';
-import { auth } from '@clerk/nextjs/server';
+import { auth, clerkClient } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { getUserRole, getCachedUsersList } from '@/app/actions';
 
 export default async function Dashboard() {
   const { userId } = await auth();
   if (!userId) redirect('/sign-in');
 
-  const allBoards = await db.select().from(boards).where(eq(boards.userId, userId));
+  const role = await getUserRole();
+  const isManager = role === 'manager';
+
+  // Fetch Clerk users to resolve owner names if manager
+  let usersList: any[] = [];
+  if (isManager) {
+    try {
+      usersList = await getCachedUsersList();
+    } catch (e) {
+      console.error('Error fetching users from Clerk:', e);
+    }
+  }
+  const userMap = new Map<string, string>();
+  for (const u of usersList) {
+    const name = [u.firstName, u.lastName].filter(Boolean).join(' ') || u.username || u.emailAddresses?.[0]?.emailAddress || u.id;
+    userMap.set(u.id, name);
+  }
+
+  // Fetch boards
+  const allBoards = isManager
+    ? await db.select().from(boards)
+    : await db.select().from(boards).where(eq(boards.userId, userId));
   
-  // To filter cards by user, we join with lists and boards
-  const userCards = await db.select({
-    id: cards.id,
-    title: cards.title,
-    isCompleted: cards.isCompleted,
-    dueDate: cards.dueDate,
-    createdAt: cards.createdAt,
-  })
-    .from(cards)
-    .innerJoin(lists, eq(cards.listId, lists.id))
-    .innerJoin(boards, eq(lists.boardId, boards.id))
-    .where(eq(boards.userId, userId));
+  // Fetch cards
+  const userCards = isManager
+    ? await db.select({
+        id: cards.id,
+        title: cards.title,
+        isCompleted: cards.isCompleted,
+        dueDate: cards.dueDate,
+        createdAt: cards.createdAt,
+        userId: boards.userId,
+      })
+        .from(cards)
+        .innerJoin(lists, eq(cards.listId, lists.id))
+        .innerJoin(boards, eq(lists.boardId, boards.id))
+    : await db.select({
+        id: cards.id,
+        title: cards.title,
+        isCompleted: cards.isCompleted,
+        dueDate: cards.dueDate,
+        createdAt: cards.createdAt,
+        userId: boards.userId,
+      })
+        .from(cards)
+        .innerJoin(lists, eq(cards.listId, lists.id))
+        .innerJoin(boards, eq(lists.boardId, boards.id))
+        .where(eq(boards.userId, userId));
   
   const completedCardsCount = userCards.filter(c => c.isCompleted).length;
   const completionRate = userCards.length > 0 ? Math.round((completedCardsCount / userCards.length) * 100) : 0;
 
-  const recentBoards = await db.select().from(boards)
-    .where(eq(boards.userId, userId))
-    .orderBy(desc(boards.createdAt))
-    .limit(4);
-    
-  const recentBoardsWithProgress = await Promise.all(recentBoards.map(async b => {
-    const bLists = await db.select().from(lists).where(eq(lists.boardId, b.id));
+  const recentBoards = isManager
+    ? await db.select().from(boards)
+        .orderBy(desc(boards.createdAt))
+        .limit(4)
+    : await db.select().from(boards)
+        .where(eq(boards.userId, userId))
+        .orderBy(desc(boards.createdAt))
+        .limit(4);
+     
+  const recentBoardIds = recentBoards.map(b => b.id);
+  const recentLists = recentBoardIds.length > 0 
+    ? await db.select().from(lists).where(inArray(lists.boardId, recentBoardIds))
+    : [];
+  const recentListIds = recentLists.map(l => l.id);
+  const recentCards = recentListIds.length > 0
+    ? await db.select().from(cards).where(inArray(cards.listId, recentListIds))
+    : [];
+
+  const recentBoardsWithProgress = recentBoards.map(b => {
+    const bLists = recentLists.filter(l => l.boardId === b.id);
     let bTotal = 0;
     let bCompleted = 0;
     for (const l of bLists) {
-      const bCards = await db.select().from(cards).where(eq(cards.listId, l.id));
+      const bCards = recentCards.filter(c => c.listId === l.id);
       bTotal += bCards.length;
       bCompleted += bCards.filter(c => c.isCompleted).length;
     }
     return {
       ...b,
+      ownerName: userMap.get(b.userId) || `User (${b.userId.slice(0, 8)})`,
       progress: bTotal > 0 ? Math.round((bCompleted / bTotal) * 100) : 0,
     };
-  }));
+  });
 
   const upcomingDeadlines = userCards
     .filter(c => c.dueDate !== null)
@@ -54,7 +103,11 @@ export default async function Dashboard() {
 
   const recentActivity = [...userCards]
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-    .slice(0, 3);
+    .slice(0, 3)
+    .map(c => ({
+      ...c,
+      ownerName: userMap.get(c.userId) || `User (${c.userId.slice(0, 8)})`,
+    }));
 
   const icons = ['palette', 'architecture', 'design_services', 'brush'];
   const colors = ['bg-primary-fixed text-primary', 'bg-tertiary-fixed text-tertiary', 'bg-secondary-fixed text-secondary', 'bg-surface-container-highest text-on-surface'];
@@ -64,8 +117,14 @@ export default async function Dashboard() {
       {/* Overview */}
       <section className="flex flex-col md:flex-row justify-between items-end gap-6">
         <div>
-          <h1 className="text-4xl md:text-5xl font-serif font-extrabold tracking-tight text-on-surface mb-2">Workspace Overview</h1>
-          <p className="text-on-surface-variant font-medium">Welcome back. You have {upcomingDeadlines.length} deadlines approaching this week.</p>
+          <h1 className="text-4xl md:text-5xl font-serif font-extrabold tracking-tight text-on-surface mb-2">
+            {isManager ? 'Global Workspace Overview' : 'Workspace Overview'}
+          </h1>
+          <p className="text-on-surface-variant font-medium">
+            {isManager 
+              ? `Manager access. There are ${upcomingDeadlines.length} deadlines approaching this week across all workspace projects.` 
+              : `Welcome back. You have ${upcomingDeadlines.length} deadlines approaching this week.`}
+          </p>
         </div>
       </section>
 
@@ -120,7 +179,12 @@ export default async function Dashboard() {
                     {board.progress === 100 ? 'Completed' : 'In Progress'}
                   </span>
                 </div>
-                <h3 className="text-lg font-bold font-serif mb-2">{board.title}</h3>
+                <h3 className="text-lg font-bold font-serif mb-1">{board.title}</h3>
+                {isManager && (
+                  <p className="text-[11px] font-bold text-primary tracking-tight mb-2">
+                    Owner: {board.ownerName}
+                  </p>
+                )}
                 <p className="text-sm text-on-surface-variant mb-6 line-clamp-2">Project board containing active lists and tasks.</p>
                 <div className="space-y-4">
                   <div className="flex justify-between items-end text-xs font-bold">
@@ -178,7 +242,7 @@ export default async function Dashboard() {
                     <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>{card.isCompleted ? 'check_circle' : 'add_circle'}</span>
                   </div>
                   <div>
-                    <p className="text-xs text-on-surface">New task <em>"{card.title}"</em> was created.</p>
+                    <p className="text-xs text-on-surface">New task <em>"{card.title}"</em> was created{isManager ? ` by ${card.ownerName}` : ''}.</p>
                     <p className="text-[10px] text-on-surface-variant font-medium mt-1">{new Date(card.createdAt).toLocaleDateString()}</p>
                   </div>
                 </div>

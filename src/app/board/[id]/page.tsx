@@ -1,31 +1,56 @@
 import { db } from '@/db';
 import { boards, lists, cards } from '@/db/schema';
-import { eq, asc, and } from 'drizzle-orm';
+import { eq, asc, and, inArray } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import BoardClient from '@/components/BoardClient';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { auth } from '@clerk/nextjs/server';
+import { getUserRole } from '@/app/actions';
 
 export default async function BoardPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   const { userId } = await auth();
   if (!userId) notFound();
 
-  // Only the board owner can view this page
-  const boardResult = await db.select().from(boards).where(and(eq(boards.id, id), eq(boards.userId, userId)));
-  if (boardResult.length === 0) {
-    notFound();
+  const role = await getUserRole();
+  const isManager = role === 'manager';
+
+  let board;
+  if (isManager) {
+    const boardResult = await db.select().from(boards).where(eq(boards.id, id));
+    if (boardResult.length === 0) {
+      notFound();
+    }
+    board = boardResult[0];
+  } else {
+    // Only the board owner can view this page
+    const boardResult = await db.select().from(boards).where(and(eq(boards.id, id), eq(boards.userId, userId)));
+    if (boardResult.length === 0) {
+      notFound();
+    }
+    board = boardResult[0];
   }
-  const board = boardResult[0];
 
   const boardLists = await db.select().from(lists).where(eq(lists.boardId, id)).orderBy(asc(lists.order));
-  const listsWithCards = await Promise.all(
-    boardLists.map(async (list) => {
-      const listCards = await db.select().from(cards).where(eq(cards.listId, list.id)).orderBy(asc(cards.order));
-      return { ...list, cards: listCards };
-    })
-  );
+  
+  const listIds = boardLists.map(l => l.id);
+  const allCards = listIds.length > 0
+    ? await db.select().from(cards).where(inArray(cards.listId, listIds)).orderBy(asc(cards.order))
+    : [];
+
+  const cardsByListId = new Map<string, any[]>();
+  for (const card of allCards) {
+    if (!cardsByListId.has(card.listId)) {
+      cardsByListId.set(card.listId, []);
+    }
+    cardsByListId.get(card.listId)!.push(card);
+  }
+
+  const listsWithCards = boardLists.map(list => ({
+    ...list,
+    cards: cardsByListId.get(list.id) || []
+  }));
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-surface">

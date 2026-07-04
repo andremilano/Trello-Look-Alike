@@ -12,6 +12,7 @@ import {
 } from '@/app/actions';
 import { X, Calendar, User, Tag, Trash2, Archive, Share2, MoreHorizontal, CheckCircle2, Circle, AlignLeft, ChevronDown } from 'lucide-react';
 import { OptimisticAction } from './BoardClient';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 const CATEGORY_COLORS = [
   'bg-tertiary-fixed text-on-surface',
@@ -33,6 +34,7 @@ export default function CardDetailModal({
 }) {
   const [isPending, startTransition] = useTransition();
   const [title, setTitle] = useState(card?.title || '');
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [description, setDescription] = useState(card?.description || '');
   const [dueDate, setDueDate] = useState(card?.dueDate || '');
   const [category, setCategory] = useState(card?.category || '');
@@ -64,18 +66,21 @@ export default function CardDetailModal({
   };
 
   const handleDelete = () => {
-    if (window.confirm('Are you sure you want to delete this card?')) {
-      startTransition(async () => {
-        addOptimisticAction({ type: 'DELETE_CARD', payload: card.id });
-        onClose();
-        await deleteCard(card.id, boardId);
-      });
-    }
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setShowDeleteModal(false);
+    startTransition(async () => {
+      addOptimisticAction({ type: 'DELETE_CARD', payload: card.id });
+      onClose();
+      await deleteCard(card.id, boardId);
+    });
   };
 
   return (
     <div 
-      className="fixed inset-0 bg-on-surface/20 backdrop-blur-sm z-[100] flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-200"
+      className="fixed inset-0 bg-on-surface/20 backdrop-blur-sm z-100 flex items-center justify-center p-4 md:p-12 animate-in fade-in duration-200"
       onClick={handleBackdropClick}
     >
       <div 
@@ -287,6 +292,16 @@ export default function CardDetailModal({
           </div>
         </div>
       </div>
+      
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        title="Delete Card"
+        description={`Are you sure you want to delete the card "${card.title}"?`}
+        confirmText="Delete"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }

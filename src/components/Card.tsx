@@ -4,6 +4,7 @@ import { deleteCard, updateCardTitle, toggleCardCompletion, updateCardDescriptio
 import { Trash2, Pencil, AlignLeft, CheckSquare, Square, Tag, User, Calendar } from 'lucide-react';
 import { useTransition, useState } from 'react';
 import { OptimisticAction } from './BoardClient';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 const CATEGORY_COLORS = [
   'bg-tertiary-fixed text-on-surface',
@@ -26,6 +27,7 @@ export default function Card({
   const [isPending, startTransition] = useTransition();
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(card.title);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   
   const [isDescOpen, setIsDescOpen] = useState(false);
   const [isEditingDesc, setIsEditingDesc] = useState(false);
@@ -48,12 +50,15 @@ export default function Card({
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this card?')) {
-      startTransition(async () => {
-        addOptimisticAction({ type: 'DELETE_CARD', payload: card.id });
-        await deleteCard(card.id, boardId);
-      });
-    }
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setShowDeleteModal(false);
+    startTransition(async () => {
+      addOptimisticAction({ type: 'DELETE_CARD', payload: card.id });
+      await deleteCard(card.id, boardId);
+    });
   };
 
   const handleSaveTitle = async (e?: React.FormEvent) => {
@@ -347,6 +352,15 @@ export default function Card({
         </div>
       )}
 
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        title="Delete Card"
+        description={`Are you sure you want to delete the card "${card.title}"?`}
+        confirmText="Delete"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }

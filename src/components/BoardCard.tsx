@@ -4,19 +4,24 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteBoard, updateBoard } from '@/app/actions';
 import { Trash2, Pencil, Check, X } from 'lucide-react';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
-export default function BoardCard({ board }: { board: any }) {
+export default function BoardCard({ board, ownerName }: { board: any; ownerName?: string }) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(board.title);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const handleDelete = async (e: React.MouseEvent) => {
+  const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to delete this board? All lists and cards inside will be deleted.')) {
-      setIsDeleting(true);
-      await deleteBoard(board.id);
-    }
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowDeleteModal(false);
+    setIsDeleting(true);
+    await deleteBoard(board.id);
   };
 
   const handleEdit = (e: React.MouseEvent) => {
@@ -80,8 +85,15 @@ export default function BoardCard({ board }: { board: any }) {
           <h3 className="font-semibold text-on-surface group-hover:text-secondary transition-colors py-1 truncate pr-8">
             {board.title}
           </h3>
-          <div className="text-[0.75rem] font-semibold uppercase tracking-[0.05em] text-on-surface-variant mt-auto pt-4">
-            {new Date(board.createdAt).toLocaleDateString()}
+          <div className="mt-auto pt-4">
+            {ownerName && (
+              <div className="text-[0.65rem] font-bold text-primary tracking-wider uppercase mb-1">
+                Owner: {ownerName}
+              </div>
+            )}
+            <div className="text-[0.75rem] font-semibold uppercase tracking-[0.05em] text-on-surface-variant">
+              {new Date(board.createdAt).toLocaleDateString()}
+            </div>
           </div>
           
           <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -102,6 +114,16 @@ export default function BoardCard({ board }: { board: any }) {
           </div>
         </>
       )}
+      
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        title="Delete Board"
+        description={`Are you sure you want to delete "${board.title}"? All lists and cards inside will be permanently deleted.`}
+        confirmText="Delete"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }

@@ -3,14 +3,48 @@
 import { db } from '@/db';
 import { boards, lists, cards } from '@/db/schema';
 import { eq, and } from 'drizzle-orm';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_cache, revalidateTag } from 'next/cache';
 import crypto from 'crypto';
-import { auth } from '@clerk/nextjs/server';
+import { auth, currentUser, clerkClient, createClerkClient } from '@clerk/nextjs/server';
 
 async function requireUserId(): Promise<string> {
   const { userId } = await auth();
   if (!userId) throw new Error('Unauthorized');
   return userId;
+}
+
+export async function getUserRole(): Promise<string> {
+  const user = await currentUser();
+  return (user?.publicMetadata?.role as string) || 'user';
+}
+
+export const getCachedUsersList = unstable_cache(
+  async () => {
+    const client = createClerkClient({ secretKey: process.env.CLERK_SECRET_KEY });
+    const response = await client.users.getUserList({ limit: 100 });
+    return Array.isArray(response) ? response : (response.data || []);
+  },
+  ['clerk-users-list'],
+  { revalidate: 60, tags: ['clerk-users'] }
+);
+
+export async function changeUserRole(targetUserId: string, newRole: 'user' | 'manager') {
+  const currentRole = await getUserRole();
+  if (currentRole !== 'manager') {
+    throw new Error('Forbidden: Only managers can change roles');
+  }
+
+  const client = await clerkClient();
+  await client.users.updateUserMetadata(targetUserId, {
+    publicMetadata: {
+      role: newRole,
+    },
+  });
+
+  revalidateTag('clerk-users', 'max');
+  revalidatePath('/team');
+  revalidatePath('/');
+  revalidatePath('/boards');
 }
 
 export async function createBoard(formData: FormData) {
@@ -82,21 +116,36 @@ export async function updateCardList(cardId: string, newListId: string, boardId:
 
 export async function deleteBoard(boardId: string) {
   const userId = await requireUserId();
-  // Only allow owner to delete
+  const role = await getUserRole();
+  
+  // Only allow owner or manager to delete
   const boardLists = await db.select().from(lists).where(eq(lists.boardId, boardId));
   for (const list of boardLists) {
     await db.delete(cards).where(eq(cards.listId, list.id));
   }
   await db.delete(lists).where(eq(lists.boardId, boardId));
-  await db.delete(boards).where(and(eq(boards.id, boardId), eq(boards.userId, userId)));
+  
+  if (role === 'manager') {
+    await db.delete(boards).where(eq(boards.id, boardId));
+  } else {
+    await db.delete(boards).where(and(eq(boards.id, boardId), eq(boards.userId, userId)));
+  }
+  
   revalidatePath('/');
   revalidatePath('/boards');
 }
 
 export async function updateBoard(boardId: string, title: string) {
   const userId = await requireUserId();
+  const role = await getUserRole();
   if (!title || title.trim() === '') return;
-  await db.update(boards).set({ title: title.trim() }).where(and(eq(boards.id, boardId), eq(boards.userId, userId)));
+  
+  if (role === 'manager') {
+    await db.update(boards).set({ title: title.trim() }).where(eq(boards.id, boardId));
+  } else {
+    await db.update(boards).set({ title: title.trim() }).where(and(eq(boards.id, boardId), eq(boards.userId, userId)));
+  }
+  
   revalidatePath('/');
   revalidatePath('/boards');
 }

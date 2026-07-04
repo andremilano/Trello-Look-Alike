@@ -2,10 +2,13 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Clock, HelpCircle, LogOut, X } from 'lucide-react';
+import { LayoutDashboard, Users, Clock, HelpCircle, LogOut, X, Lock } from 'lucide-react';
+import { useUser } from '@clerk/nextjs';
 
 function SidebarContent({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname();
+  const { user } = useUser();
+  const isManager = user?.publicMetadata?.role === 'manager';
 
   const getClass = (path: string, exact = false) => {
     let active = false;
@@ -47,9 +50,12 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
             <span className="material-symbols-outlined text-[20px] shrink-0">dashboard</span>
             <span>My Boards</span>
           </Link>
-          <Link href="#" className={getClass('/team')}>
-            <Users className="w-4 h-4 shrink-0" />
-            <span>Team Space</span>
+          <Link href="/team" onClick={onClose} className={getClass('/team') + " justify-between pr-4"}>
+            <div className="flex items-center gap-3">
+              <Users className="w-4 h-4 shrink-0" />
+              <span>Team Space</span>
+            </div>
+            {!isManager && <Lock className="w-3.5 h-3.5 opacity-50 shrink-0" />}
           </Link>
           <Link href="#" className={getClass('/timeline')}>
             <Clock className="w-4 h-4 shrink-0" />

@@ -5,6 +5,7 @@ import CardComponent from './Card';
 import { createCard, deleteList, updateList, updateCardList } from '@/app/actions';
 import { Plus, Trash2 } from 'lucide-react';
 import { OptimisticAction } from './BoardClient';
+import ConfirmationModal from '@/components/ConfirmationModal';
 
 export default function List({ 
   list, 
@@ -20,6 +21,7 @@ export default function List({
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(list.title);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isTransitioning, startTransition] = useTransition();
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -37,13 +39,16 @@ export default function List({
     });
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this list? All cards inside will be deleted.')) {
-      startTransition(async () => {
-        addOptimisticAction({ type: 'DELETE_LIST', payload: list.id });
-        await deleteList(list.id, boardId);
-      });
-    }
+  const handleDelete = () => {
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setShowDeleteModal(false);
+    startTransition(async () => {
+      addOptimisticAction({ type: 'DELETE_LIST', payload: list.id });
+      await deleteList(list.id, boardId);
+    });
   };
 
   const handleSaveTitle = async (e?: React.FormEvent) => {
@@ -173,6 +178,16 @@ export default function List({
           </button>
         )}
       </div>
+      
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        title="Delete List"
+        description={`Are you sure you want to delete the list "${list.title}"? All cards inside will be permanently deleted.`}
+        confirmText="Delete"
+        variant="danger"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowDeleteModal(false)}
+      />
     </div>
   );
 }
