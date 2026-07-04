@@ -57,7 +57,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
             </div>
             {!isManager && <Lock className="w-3.5 h-3.5 opacity-50 shrink-0" />}
           </Link>
-          <Link href="#" className={getClass('/timeline')}>
+          <Link href="/timeline" onClick={onClose} className={getClass('/timeline')}>
             <Clock className="w-4 h-4 shrink-0" />
             <span>Timeline</span>
           </Link>
